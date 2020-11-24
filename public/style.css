@@ -1,0 +1,82 @@
+body {
+    background-color: gold;
+    font-family: "Ubuntu";
+    color: #1f40b5;
+}
+#registration {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#registration h1 {
+    font-size: 50px;
+}
+
+#registration h2 {
+    font-size: 30px;
+}
+
+#smallLogo {
+    width: 100px;
+    height: 100px;
+}
+
+#bigLogo {
+    width: 300px;
+    height: 300px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    outline: none;
+    border: 0;
+    background-color: gold;
+    border-bottom: 2px solid #1f40b5;
+    width: 400px;
+    display: block;
+    font-size: 20px;
+    color: #1f40b5;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.btn {
+    border: none;
+    display: block;
+    cursor: pointer;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background-color: rgb(36, 90, 172);
+    color: #f2f4fb;
+    padding: 20px 20px;
+    font-size: 25px;
+    border-radius: 5px;
+}
+
+.btn:hover {
+    background-color: rgb(25, 77, 155);
+    color: rgb(255, 197, 89);
+}
+
+.btn:active {
+    border: solid rgb(15, 76, 129) 2px;
+}
+
+::placeholder {
+    /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: #1f40b5;
+    opacity: 1; /* Firefox */
+    text-align: center;
+}
+
+input:focus::placeholder {
+    color: transparent;
+}
