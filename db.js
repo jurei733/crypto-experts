@@ -20,3 +20,7 @@ module.exports.addUser = function addUser(
         [firstname, lastname, email, password]
     );
 };
+
+module.exports.getUserByEmail = function getUserByEmail(email) {
+    return db.query("SELECT * FROM users WHERE email = $1", [email]);
+};

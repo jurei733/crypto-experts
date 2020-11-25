@@ -1,15 +1,14 @@
 import React from "react";
-import axios from "./axios.js";
 
 import { Link } from "react-router-dom";
 
-export default class Registration extends React.Component {
+import axios from "./axios.js";
+
+export default class Login extends React.Component {
     constructor() {
         super();
 
         this.state = {
-            firstname: "",
-            lastname: "",
             email: "",
             password: "",
             error: false,
@@ -23,7 +22,7 @@ export default class Registration extends React.Component {
         e.preventDefault();
 
         axios
-            .post("/register", this.state)
+            .post("/login", this.state)
             .then(() => {
                 location.replace("/");
             })
@@ -33,7 +32,7 @@ export default class Registration extends React.Component {
                 });
             });
 
-        console.log("FORM SUBMITTED", this.state);
+        console.log("LOGIN FORM SUBMITTED", this.state);
     }
 
     handleChange(e) {
@@ -46,45 +45,30 @@ export default class Registration extends React.Component {
 
     render() {
         return (
-            <div id="registration">
+            <React.Fragment>
+                <h2>Login</h2>
                 {this.state.error && <p>DIDNT WORK, TOO BAD, BYE.</p>}
                 <form onSubmit={this.handleSubmit}>
                     <input
-                        type="text"
-                        name="firstname"
-                        onChange={this.handleChange}
-                        value={this.state.firstname}
-                        placeholder="Firstname"
-                    />
-                    <input
-                        type="text"
-                        name="lastname"
-                        onChange={this.handleChange}
-                        value={this.state.lastname}
-                        placeholder="Lastname"
-                    />
-                    <input
                         type="email"
                         name="email"
+                        placeholder="email"
                         onChange={this.handleChange}
                         value={this.state.email}
-                        placeholder="Email"
                     />
                     <input
                         type="password"
                         name="password"
+                        placeholder="password"
                         onChange={this.handleChange}
                         value={this.state.password}
-                        placeholder="Password"
                     />
                     <button className="btn" type="submit">
-                        Create Account
+                        Login
                     </button>
-                    <p>
-                        Already a member? <Link to="/login">Login</Link>
-                    </p>
                 </form>
-            </div>
+                <Link to="/">Registration</Link>
+            </React.Fragment>
         );
     }
 }
