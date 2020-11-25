@@ -68,6 +68,7 @@ export default class Login extends React.Component {
                     </button>
                 </form>
                 <Link to="/">Registration</Link>
+                <Link to="/resetpassword">Forgot your Password?</Link>
             </React.Fragment>
         );
     }

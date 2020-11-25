@@ -6,6 +6,8 @@ const bcrypt = require("bcryptjs");
 const secrets = require("./secrets.json");
 const db = require("./db.js");
 const csurf = require("csurf");
+const crypto = require("crypto-random-string");
+const sendEmail = require("./ses");
 
 app.use(compression());
 
@@ -91,6 +93,57 @@ app.post("/login", (req, res) => {
 
             req.session.userId = userId;
             res.sendStatus(200);
+        });
+});
+
+app.post("/password/reset/start", (req, res) => {
+    let { email } = req.body;
+    const code = crypto({ length: 10 });
+    db.getUserByEmail(email).then(({ rows }) => {
+        if (rows.length === 0) return res.sendStatus(400);
+        sendEmail(
+            "reichlej@gmx.de",
+            "Here is the code you need to reset your Password: " +
+                code +
+                " you have 10 minutes time for that",
+            "IT WORKS "
+        )
+            .catch(() => {
+                res.sendStatus(400);
+            })
+            .then(() => {
+                db.addCode(email, code);
+                res.sendStatus(200);
+            })
+            .catch(() => {
+                res.sendStatus(400);
+            });
+    });
+});
+
+app.post("/password/reset/verify", (req, res) => {
+    let { code, password } = req.body;
+    console.log(code, password);
+    db.getCode(code)
+        .then(({ rows }) => {
+            console.log("RESULTS", rows);
+            if (rows.length === 1) {
+                bcrypt.hash(password, 10).then((hash) => {
+                    db.resetPassword(rows[0].email, hash)
+                        .then(() => {
+                            res.sendStatus(200);
+                        })
+                        .catch(() => {
+                            res.sendStatus(400);
+                        });
+                });
+            } else {
+                res.sendStatus(400);
+            }
+        })
+        .catch((e) => {
+            console.log("ERROR", e);
+            res.sendStatus(400);
         });
 });
 
