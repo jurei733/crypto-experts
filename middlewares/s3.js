@@ -16,7 +16,6 @@ const s3 = new aws.S3({
 });
 
 module.exports = (req, res, next) => {
-    //console.log("i AM IN S3", req);
     if (!req.file) {
         return res.status(400).send();
     }
@@ -24,7 +23,7 @@ module.exports = (req, res, next) => {
     const { filename, mimetype, size, path } = req.file;
 
     s3.putObject({
-        Bucket: "julianimageboard",
+        Bucket: "juliansocialnetwork",
         ACL: "public-read",
         Key: filename,
         Body: fs.createReadStream(path),

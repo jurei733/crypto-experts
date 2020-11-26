@@ -23,12 +23,9 @@ export default class App extends React.Component {
     }
 
     componentDidMount() {
-        //console.log("APP DID MOUNT");
         axios
             .get("/user", this.state)
             .then(({ data }) => {
-                //console.log("DATA FROM MY AXIOS REQUEST", data);
-                //console.log(data[0].image, data[0].firstname, "hhh");
                 this.setState({
                     profilePic: data[0].image,
                     firstname: data[0].firstname,
