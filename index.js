@@ -8,6 +8,8 @@ const db = require("./db.js");
 const csurf = require("csurf");
 const crypto = require("crypto-random-string");
 const sendEmail = require("./ses");
+const uploader = require("./middlewares/uploader.js");
+const s3 = require("./middlewares/s3.js");
 
 app.use(compression());
 
@@ -32,6 +34,7 @@ if (process.env.NODE_ENV != "production") {
 }
 
 app.use(express.static("public"));
+app.use(express.static("uploads"));
 
 app.use(csurf());
 
@@ -147,8 +150,27 @@ app.post("/password/reset/verify", (req, res) => {
         });
 });
 
+app.get("/user", function (req, res) {
+    db.getProfile(req.session.userId).then(({ rows }) => {
+        if (rows.length === 0) return res.sendStatus(400);
+        //console.log("Profile Informations", rows);
+        res.json(rows);
+    });
+});
+
+app.post("/upload", uploader.single("file"), s3, (req, res) => {
+    let { url } = req.body;
+    //console.log("S3 AND MULTER WORKED");
+    //console.log(req.session.userId, url);
+    db.addImage(req.session.userId, url).then(({ rows }) => {
+        //if (rows.length === 0) return res.sendStatus(400);
+        console.log("IMAGE ADDED INTO DATABASE", rows[0]);
+
+        res.json(rows[0]);
+    });
+});
+
 app.get("*", function (req, res) {
-    console.log("TEST");
     if (!req.session.userId) {
         res.redirect("/welcome");
     } else {

@@ -34,14 +34,28 @@ module.exports.addCode = function addCode(email, code) {
 
 module.exports.getCode = function getCode(code) {
     return db.query(
-        "SELECT * FROM codes WHERE code=$1 AND CURRENT_TIMESTAMP - created_at < INTERVAL '10 minutes'",
+        "SELECT * FROM codes WHERE code=$1 AND CURRENT_TIMESTAMP - created_at < INTERVAL '10 minutes' RETURNING *",
         [code]
     );
 };
 
 module.exports.resetPassword = function resetPassword(email, password) {
-    return db.query("UPDATE users SET password=$2 WHERE email=$1", [
+    return db.query("UPDATE users SET password=$2 WHERE email=$1 RETURNING *", [
         email,
         password,
+    ]);
+};
+
+module.exports.getProfile = function getProfile(userId) {
+    return db.query(
+        "SELECT firstname,lastname,email,image FROM users WHERE id=$1",
+        [userId]
+    );
+};
+
+module.exports.addImage = function addImage(userId, imageURL) {
+    return db.query("UPDATE users SET image=$2 WHERE id=$1 RETURNING image", [
+        userId,
+        imageURL,
     ]);
 };

@@ -69,7 +69,7 @@ export default class ResetPassword extends React.Component {
             return (
                 <React.Fragment>
                     {this.state.error && <p>DIDNT WORK, TOO BAD, BYE.</p>}
-                    <h1>Give us your E-Mail to refresh your memory</h1>
+                    <h2>Give us your E-Mail to refresh your memory</h2>
                     <form onSubmit={this.sendCode}>
                         <input
                             type="email"
@@ -88,11 +88,10 @@ export default class ResetPassword extends React.Component {
             return (
                 <React.Fragment>
                     {this.state.error && <p>DIDNT WORK, TOO BAD, BYE.</p>}
-                    <h1>
+                    <h2>
                         Give us your Auth Code that weve sent to your email and
-                        also your new password, but probably you are going to
-                        forget it again.
-                    </h1>
+                        also your new password.
+                    </h2>
                     <form onSubmit={this.verifyCode}>
                         <input
                             type="text"

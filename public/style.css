@@ -86,3 +86,37 @@ input[type="password"] {
 input:focus::placeholder {
     color: transparent;
 }
+
+#profilePic {
+    width: 100px;
+    height: 100px;
+}
+
+#appHeader {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#dark {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal {
+    background-color: goldenrod;
+    border: 2px solid #1f40b5;
+    position: fixed;
+    width: 50vw;
+    top: 200px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    color: #1f40b5;
+    border-radius: 30px;
+    min-height: 50vh;
+}
