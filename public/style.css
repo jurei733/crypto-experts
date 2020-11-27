@@ -30,8 +30,7 @@ form {
 }
 
 #smallLogo {
-    width: 100px;
-    height: 100px;
+    width: 140px;
 }
 
 #bigLogo {
@@ -87,15 +86,17 @@ input:focus::placeholder {
     color: transparent;
 }
 
-#profilePic {
-    width: 100px;
-    height: 100px;
+.smallProfilePicture {
+    width: 120px;
+    height: 120px;
 }
 
 #appHeader {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    border-bottom: 1px solid #1f40b5;
+    margin-bottom: 15px;
 }
 
 #dark {
@@ -119,4 +120,26 @@ input:focus::placeholder {
     color: #1f40b5;
     border-radius: 30px;
     min-height: 50vh;
+}
+
+.bigProfilePicture {
+    width: 250px;
+    margin-right: 50px;
+}
+
+.profile {
+    display: flex;
+    flex-direction: row;
+}
+
+#bioContent {
+    font-size: 25px;
+}
+
+textarea {
+    display: block;
+    width: 500px;
+    height: 200px;
+    font-size: 25px;
+    border: 1px solid #1f40b5;
 }

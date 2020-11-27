@@ -1,6 +1,7 @@
 import React from "react";
 
 import Logo from "./Logo.js";
+import Profile from "./Profile";
 import ProfilePic from "./ProfilePic";
 import Uploader from "./Uploader";
 import axios from "./axios.js";
@@ -16,6 +17,7 @@ export default class App extends React.Component {
             firstname: "",
             lastname: "",
             email: "",
+            bio: "",
         };
 
         this.toggleUploader = this.toggleUploader.bind(this);
@@ -31,6 +33,7 @@ export default class App extends React.Component {
                     firstname: data[0].firstname,
                     lastname: data[0].lastname,
                     email: data[0].email,
+                    bio: data[0].bio,
                 });
             })
             .catch(() => {
@@ -47,13 +50,13 @@ export default class App extends React.Component {
     }
 
     uploadImage(imgURL) {
-        console.log(imgURL);
         this.setState({
             profilePic: imgURL,
         });
     }
 
     render() {
+        if (!this.state.email) return null;
         return (
             <React.Fragment>
                 {this.state.error && <p>DIDNT WORK, TOO BAD, BYE.</p>}
@@ -61,6 +64,7 @@ export default class App extends React.Component {
                     <Logo />
                     <ProfilePic
                         profilePic={this.state.profilePic}
+                        className="smallProfilePicture"
                         firstname={this.state.firstname}
                         lastname={this.state.lastname}
                         toggleUploader={this.toggleUploader}
@@ -72,6 +76,15 @@ export default class App extends React.Component {
                         uploadImage={this.uploadImage}
                     />
                 )}
+                <div id="appProfile">
+                    <Profile
+                        toggleUploader={this.toggleUploader}
+                        profilePic={this.state.profilePic}
+                        firstname={this.state.firstname}
+                        lastname={this.state.lastname}
+                        bio={this.state.bio}
+                    />
+                </div>
             </React.Fragment>
         );
     }

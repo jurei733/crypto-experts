@@ -48,7 +48,7 @@ module.exports.resetPassword = function resetPassword(email, password) {
 
 module.exports.getProfile = function getProfile(userId) {
     return db.query(
-        "SELECT firstname,lastname,email,image FROM users WHERE id=$1",
+        "SELECT firstname,lastname,email,image,bio FROM users WHERE id=$1",
         [userId]
     );
 };
@@ -57,5 +57,12 @@ module.exports.addImage = function addImage(userId, imageURL) {
     return db.query("UPDATE users SET image=$2 WHERE id=$1 RETURNING image", [
         userId,
         imageURL,
+    ]);
+};
+
+module.exports.updateBio = function updateBio(userId, bio) {
+    return db.query("UPDATE users SET bio=$2 WHERE id=$1 RETURNING bio", [
+        userId,
+        bio,
     ]);
 };

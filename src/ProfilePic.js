@@ -5,7 +5,7 @@ export default function ProfilePic(props) {
     if (props.profilePic) {
         return (
             <img
-                id="profilePic"
+                className={props.className}
                 onClick={props.toggleUploader}
                 src={props.profilePic}
                 alt={`${props.firstname} ${props.lastname}`}
@@ -14,7 +14,7 @@ export default function ProfilePic(props) {
     } else {
         return (
             <img
-                id="profilePic"
+                className={props.className}
                 onClick={props.toggleUploader}
                 src="noProfilePicture.png"
             />

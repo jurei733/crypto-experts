@@ -160,14 +160,23 @@ app.get("/user", function (req, res) {
 
 app.post("/upload", uploader.single("file"), s3, (req, res) => {
     let { url } = req.body;
-    //console.log("S3 AND MULTER WORKED");
-    //console.log(req.session.userId, url);
     db.addImage(req.session.userId, url).then(({ rows }) => {
         //if (rows.length === 0) return res.sendStatus(400);
         console.log("IMAGE ADDED INTO DATABASE", rows[0]);
 
         res.json(rows[0]);
     });
+});
+
+app.post("/update/profile", (req, res) => {
+    //console.log("SAVE REQUEST", req.body.bio);
+    db.updateBio(req.session.userId, req.body.bio)
+        .then(() => {
+            res.sendStatus(200);
+        })
+        .catch((e) => {
+            res.sendStatus(400);
+        });
 });
 
 app.get("*", function (req, res) {

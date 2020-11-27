@@ -50,6 +50,7 @@ export default class Uploader extends React.Component {
         return (
             <div id="dark">
                 <div className="modal">
+                    <p onClick={this.props.toggleUploader}>X</p>
                     <form onSubmit={this.handleSubmit}>
                         <input
                             onChange={this.handleChange}
