@@ -42,7 +42,6 @@ export default class BioEditor extends React.Component {
 
     render() {
         if (this.state.error) return <p>DIDNT WORK, TOO BAD</p>;
-        let name = this.state.firstname + this.state.lastname;
 
         if (!this.state.editing) {
             if (!this.state.bio) {

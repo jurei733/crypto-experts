@@ -13,6 +13,7 @@ export default class Profile extends React.Component {
             lastname: this.props.lastname,
             profilePic: this.props.profilePic,
         };
+        this.updateBio = this.props.updateBio.bind(this);
     }
 
     render() {
@@ -26,6 +27,7 @@ export default class Profile extends React.Component {
                     profilePic={this.props.profilePic}
                 />
                 <BioEditor
+                    updateBio={this.updateBio}
                     firstname={this.props.firstname}
                     lastname={this.props.lastname}
                     bio={this.props.bio}

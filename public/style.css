@@ -2,6 +2,7 @@ body {
     background-color: gold;
     font-family: "Ubuntu";
     color: #1f40b5;
+    margin: 0;
 }
 #registration {
     display: flex;
@@ -124,6 +125,7 @@ input:focus::placeholder {
 
 .bigProfilePicture {
     width: 250px;
+    height: 250px;
     margin-right: 50px;
 }
 
@@ -142,4 +144,31 @@ textarea {
     height: 200px;
     font-size: 25px;
     border: 1px solid #1f40b5;
+}
+
+#appHeader .headerIcon {
+    width: 120px;
+    height: 120px;
+}
+
+.userOverview {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin-bottom: 50px;
+    overflow-x: auto;
+    background-color: rgba(31, 64, 181, 0.9);
+    margin-top: 50px;
+}
+
+.userOverview img {
+    width: 200px;
+    height: 300px;
+    object-fit: contain;
+    margin-right: 50px;
+}
+
+.link {
+    font-size: 30px;
+    color: white;
 }

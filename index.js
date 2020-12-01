@@ -10,6 +10,7 @@ const crypto = require("crypto-random-string");
 const sendEmail = require("./ses");
 const uploader = require("./middlewares/uploader.js");
 const s3 = require("./middlewares/s3.js");
+const CoinGecko = require("coingecko-api");
 
 app.use(compression());
 
@@ -177,6 +178,39 @@ app.post("/update/profile", (req, res) => {
         .catch((e) => {
             res.sendStatus(400);
         });
+});
+
+app.get("/api/user/:id", (req, res) => {
+    if (!req.session.userId) return res.sendStatus(401);
+
+    if (req.params.id == req.session.userId) {
+        return res.sendStatus(418);
+    }
+    console.log("ID in index", req.params.id);
+    db.getProfile(req.params.id).then(({ rows }) => {
+        if (rows.length === 0) return res.sendStatus(404);
+        res.json(rows);
+    });
+});
+
+app.get("/api/users", async (req, res) => {
+    console.log(req.query);
+    if (!Object.getOwnPropertyNames(req.query).length) {
+        let { rows } = await db.newestUsers();
+        console.log(rows);
+        res.json(rows);
+    } else {
+        let { rows } = await db.searchUsers(req.query.q);
+        console.log(rows);
+        res.json(rows);
+    }
+});
+
+app.get("/api/coins", async (req, res) => {
+    const CoinGeckoClient = new CoinGecko();
+    let { data } = await CoinGeckoClient.coins.list();
+    console.log(data);
+    res.json(data);
 });
 
 app.get("*", function (req, res) {

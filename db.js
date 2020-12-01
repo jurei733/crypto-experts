@@ -66,3 +66,16 @@ module.exports.updateBio = function updateBio(userId, bio) {
         bio,
     ]);
 };
+
+module.exports.newestUsers = function newestUsers() {
+    return db.query(
+        "SELECT id, firstname,lastname,image FROM users ORDER BY created_at ASC LIMIT 3"
+    );
+};
+
+module.exports.searchUsers = function searchUsers(name) {
+    return db.query(
+        "SELECT id, firstname,lastname,image FROM users WHERE firstname ILIKE $1 ",
+        ["%" + name + "%"]
+    );
+};
