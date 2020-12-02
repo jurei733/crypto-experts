@@ -206,9 +206,66 @@ app.get("/api/users", async (req, res) => {
     }
 });
 
+app.get("/statusFriendship/:id", (req, res) => {
+    console.log("REQ-PARAMS ID", req.params.id);
+    console.log("REQ-Seesion user Id ", req.session.userId);
+
+    db.statusFriendship(req.session.userId, req.params.id)
+        .then((data) => {
+            console.log("My Rows", data.rows);
+            if (data.rows.length === 0) {
+                res.send("Send Friend Request");
+            } else {
+                console.log("DATA ROWS[0]ACCEPTED", data.rows[0].accepted);
+                if (data.rows[0].accepted) {
+                    res.send("Unfriend");
+                } else {
+                    if (req.session.userId === req.params.id) {
+                        res.send("Cancel Friend Request");
+                    } else {
+                        res.send("Accept Friend Request");
+                    }
+                }
+            }
+        })
+        .catch((e) => {
+            res.sendStatus(400);
+        });
+});
+
+app.post("/send-friend-request/:id", (req, res) => {
+    db.requestFriendship(req.session.userId, req.params.id)
+        .then(() => {
+            res.sendStatus(200);
+        })
+        .catch((e) => {
+            res.sendStatus(400);
+        });
+});
+
+app.post("/accept-friend-request/:id", (req, res) => {
+    db.acceptFriendship(req.params.id)
+        .then(() => {
+            res.sendStatus(200);
+        })
+        .catch((e) => {
+            res.sendStatus(400);
+        });
+});
+
+app.post("/end-friendship/:id", (req, res) => {
+    db.endFriendship(req.params.id)
+        .then(() => {
+            res.sendStatus(200);
+        })
+        .catch((e) => {
+            res.sendStatus(400);
+        });
+});
+
 app.get("/api/coins", async (req, res) => {
     const CoinGeckoClient = new CoinGecko();
-    let { data } = await CoinGeckoClient.coins.list();
+    let { data } = await CoinGeckoClient.coins.markets();
     console.log(data);
     res.json(data);
 });

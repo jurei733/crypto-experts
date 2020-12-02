@@ -79,3 +79,31 @@ module.exports.searchUsers = function searchUsers(name) {
         ["%" + name + "%"]
     );
 };
+
+module.exports.statusFriendship = function statusFriendship(
+    recipientId,
+    senderId
+) {
+    return db.query(
+        "SELECT * FROM friendships WHERE (recipient_id = $1 AND sender_id = $2) OR (recipient_id = $2 AND sender_id = $1)",
+        [recipientId, senderId]
+    );
+};
+
+module.exports.requestFriendship = function requestFriendship(
+    senderId,
+    receiverId
+) {
+    return db.query(
+        "INSERT INTO friendships (sender_id,recipient_id) VALUES ($1,$2)",
+        [senderId, receiverId]
+    );
+};
+
+module.exports.acceptFriendship = function acceptFriendship(id) {
+    return db.query("UPDATE friendships SET accepted=true WHERE id=$1 ", [id]);
+};
+
+module.exports.endFriendship = function endFriendship(id) {
+    return db.query("DELETE FROM friendships WHERE recipient_id=$1 ", [id]);
+};

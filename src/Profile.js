@@ -26,6 +26,9 @@ export default class Profile extends React.Component {
                     className="bigProfilePicture"
                     profilePic={this.props.profilePic}
                 />
+                <strong>
+                    {this.props.firstname} {this.props.lastname}
+                </strong>
                 <BioEditor
                     updateBio={this.updateBio}
                     firstname={this.props.firstname}
