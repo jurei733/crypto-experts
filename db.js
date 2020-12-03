@@ -91,19 +91,28 @@ module.exports.statusFriendship = function statusFriendship(
 };
 
 module.exports.requestFriendship = function requestFriendship(
-    senderId,
-    receiverId
+    recipientId,
+    senderId
 ) {
     return db.query(
-        "INSERT INTO friendships (sender_id,recipient_id) VALUES ($1,$2)",
-        [senderId, receiverId]
+        "INSERT INTO friendships (recipient_id,sender_id) VALUES ($1,$2)",
+        [recipientId, senderId]
     );
 };
 
-module.exports.acceptFriendship = function acceptFriendship(id) {
-    return db.query("UPDATE friendships SET accepted=true WHERE id=$1 ", [id]);
+module.exports.acceptFriendship = function acceptFriendship(
+    recipientId,
+    senderId
+) {
+    return db.query(
+        "UPDATE friendships SET accepted=true WHERE (recipient_id = $1 AND sender_id = $2) OR (recipient_id = $2 AND sender_id = $1) ",
+        [recipientId, senderId]
+    );
 };
 
-module.exports.endFriendship = function endFriendship(id) {
-    return db.query("DELETE FROM friendships WHERE recipient_id=$1 ", [id]);
+module.exports.endFriendship = function endFriendship(recipientId, senderId) {
+    return db.query(
+        "DELETE FROM friendships WHERE (recipient_id = $1 AND sender_id = $2) OR (recipient_id = $2 AND sender_id = $1) ",
+        [recipientId, senderId]
+    );
 };

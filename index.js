@@ -207,20 +207,17 @@ app.get("/api/users", async (req, res) => {
 });
 
 app.get("/statusFriendship/:id", (req, res) => {
-    console.log("REQ-PARAMS ID", req.params.id);
-    console.log("REQ-Seesion user Id ", req.session.userId);
+    if (!req.session.userId) return res.sendStatus(401);
 
-    db.statusFriendship(req.session.userId, req.params.id)
+    db.statusFriendship(req.params.id, req.session.userId)
         .then((data) => {
-            console.log("My Rows", data.rows);
             if (data.rows.length === 0) {
                 res.send("Send Friend Request");
             } else {
-                console.log("DATA ROWS[0]ACCEPTED", data.rows[0].accepted);
                 if (data.rows[0].accepted) {
                     res.send("Unfriend");
                 } else {
-                    if (req.session.userId === req.params.id) {
+                    if (data.rows[0].sender_id === req.session.userId) {
                         res.send("Cancel Friend Request");
                     } else {
                         res.send("Accept Friend Request");
@@ -234,7 +231,7 @@ app.get("/statusFriendship/:id", (req, res) => {
 });
 
 app.post("/send-friend-request/:id", (req, res) => {
-    db.requestFriendship(req.session.userId, req.params.id)
+    db.requestFriendship(req.params.id, req.session.userId)
         .then(() => {
             res.sendStatus(200);
         })
@@ -244,7 +241,7 @@ app.post("/send-friend-request/:id", (req, res) => {
 });
 
 app.post("/accept-friend-request/:id", (req, res) => {
-    db.acceptFriendship(req.params.id)
+    db.acceptFriendship(req.params.id, req.session.userId)
         .then(() => {
             res.sendStatus(200);
         })
@@ -254,7 +251,7 @@ app.post("/accept-friend-request/:id", (req, res) => {
 });
 
 app.post("/end-friendship/:id", (req, res) => {
-    db.endFriendship(req.params.id)
+    db.endFriendship(req.params.id, req.session.userId)
         .then(() => {
             res.sendStatus(200);
         })
