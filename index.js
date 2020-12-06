@@ -269,7 +269,7 @@ app.get("/friends-wannabes", async (req, res) => {
 app.get("/api/coins", async (req, res) => {
     const CoinGeckoClient = new CoinGecko();
     let { data } = await CoinGeckoClient.coins.markets();
-    console.log(data);
+    console.log(data[0]);
     res.json(data);
 });
 

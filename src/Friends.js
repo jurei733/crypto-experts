@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 
 export default function Friends() {
     const dispatch = useDispatch();
+
     useEffect(() => {
         dispatch(receiveFriendsWannabes());
     }, []);
@@ -26,7 +27,6 @@ export default function Friends() {
     return (
         <React.Fragment>
             <h2> This people want to be your friend </h2>
-
             <div>
                 {friendRequester.map((friendReq) => (
                     <div className="userOverview" key={friendReq.id}>
@@ -47,28 +47,25 @@ export default function Friends() {
                     </div>
                 ))}
             </div>
-
             <h2> This people are currently your friends </h2>
+            <div>
+                {friends.map((friend) => (
+                    <div className="userOverview" key={friend.id}>
+                        <img src={friend.image} />
+                        <Link className="link" to={`/user/${friend.id}`}>
+                            {friend.firstname}
+                            {friend.lastname}
+                        </Link>
+                        <div className="buttons">
+                            <button
+                                onClick={() => dispatch(unfriend(friend.id))}
+                            >
+                                End Friendship
+                            </button>
+                        </div>
+                    </div>
+                ))}
+            </div>
         </React.Fragment>
     );
 }
-/*
-
- 
-
-<div>
-    {friends.map((friend) => (
-        <div className="userOverview" key={friend.id}>
-            <img src={friend.image} />
-            <Link className="link" to={`/user/${friend.id}`}>
-                {friend.firstname}
-                {friend.lastname}
-            </Link>
-            <div className="buttons">
-                <button onClick={() => dispatch(unfriend(friend.id))}>
-                    End Friendship
-                </button>
-            </div>
-        </div>
-    ))}
-</div>;*/

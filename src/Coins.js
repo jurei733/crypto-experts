@@ -6,7 +6,7 @@ export default function Coins() {
 
     useEffect(() => {
         axios.get("/api/coins").then(({ data }) => {
-            console.log(data);
+            console.log(data[0]);
             setCoins(data);
         });
     }, []);

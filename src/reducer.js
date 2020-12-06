@@ -1,4 +1,4 @@
-export default function (state = {}, action) {
+export default function (state = { friendsWannabes: [] }, action) {
     console.log(action);
     console.log("FRIENDS WANNABES REDUCER", action.friendsList);
     if (action.type == "RECEIVE_FRIENDS_WANNABES") {
@@ -6,7 +6,7 @@ export default function (state = {}, action) {
     } else if (action.type == "ACCEPT_FRIEND_REQUEST") {
         state = {
             ...state,
-            friendWannabes: state.friendWannabes.map((wannabe) => {
+            friendsWannabes: state.friendsWannabes.map((wannabe) => {
                 if (wannabe.id !== action.id) {
                     return wannabe;
                 } else {
@@ -20,9 +20,11 @@ export default function (state = {}, action) {
     } else if (action.type == "UNFRIEND") {
         state = {
             ...state,
-            friendWannabes: state.friendWannabes.map((wannabe) => {
+            friendsWannabes: state.friendsWannabes.filter((wannabe) => {
                 if (wannabe.id !== action.id) {
-                    return wannabe;
+                    return true;
+                } else {
+                    return false;
                 }
             }),
         };
