@@ -260,6 +260,12 @@ app.post("/end-friendship/:id", (req, res) => {
         });
 });
 
+app.get("/friends-wannabes", async (req, res) => {
+    const data = await db.friendsWannabes(req.session.userId);
+    data.rows.forEach((row) => delete row.password);
+    res.json(data);
+});
+
 app.get("/api/coins", async (req, res) => {
     const CoinGeckoClient = new CoinGecko();
     let { data } = await CoinGeckoClient.coins.markets();

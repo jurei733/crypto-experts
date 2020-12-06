@@ -5,6 +5,7 @@ import Profile from "./Profile";
 import Coins from "./Coins";
 import OtherProfile from "./OtherProfile";
 import ProfilePic from "./ProfilePic";
+import Friends from "./Friends";
 import Uploader from "./Uploader";
 import FindPeople from "./FindPeople";
 import { Link } from "react-router-dom";
@@ -78,11 +79,23 @@ export default class App extends React.Component {
                     {this.state.error && <p>DIDNT WORK, TOO BAD, BYE.</p>}
                     <div id="appHeader">
                         <Logo />
-                        <Link to="/users">Find Users</Link>
+
                         <Link to="/coins">
                             <img
                                 className="headerIcon"
                                 src="/stats-icon.png"
+                            ></img>
+                        </Link>
+                        <Link to="/users">
+                            <img
+                                className="headerIcon"
+                                src="/search-icon.png"
+                            ></img>
+                        </Link>
+                        <Link to="/friends">
+                            <img
+                                className="headerIcon"
+                                src="/friends-icon.jpg"
                             ></img>
                         </Link>
                         <ProfilePic
@@ -128,6 +141,7 @@ export default class App extends React.Component {
                         />
                         <Route path="/coins" render={() => <Coins />} />
                         <Route path="/users" render={() => <FindPeople />} />
+                        <Route path="/friends" render={() => <Friends />} />
                     </React.Fragment>
                 </BrowserRouter>
             </React.Fragment>
