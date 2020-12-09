@@ -3,8 +3,10 @@ import { BrowserRouter, Route } from "react-router-dom";
 import Logo from "./Logo.js";
 import Profile from "./Profile";
 import Coins from "./Coins";
+import Coin from "./Coin";
 import OtherProfile from "./OtherProfile";
 import ProfilePic from "./ProfilePic";
+import Chat from "./Chat";
 import Friends from "./Friends";
 import Uploader from "./Uploader";
 import FindPeople from "./FindPeople";
@@ -95,9 +97,16 @@ export default class App extends React.Component {
                         <Link to="/friends">
                             <img
                                 className="headerIcon"
-                                src="/friends-icon.jpg"
+                                src="/friends-icon.png"
                             ></img>
                         </Link>
+                        <Link to="/chat">
+                            <img
+                                className="headerIcon"
+                                src="/chat-icon.png"
+                            ></img>
+                        </Link>
+
                         <ProfilePic
                             profilePic={this.state.profilePic}
                             className="smallProfilePicture"
@@ -142,6 +151,8 @@ export default class App extends React.Component {
                         <Route path="/coins" render={() => <Coins />} />
                         <Route path="/users" render={() => <FindPeople />} />
                         <Route path="/friends" render={() => <Friends />} />
+                        <Route path="/coin/:name" component={Coin} />
+                        <Route path="/chat" component={Chat} />
                     </React.Fragment>
                 </BrowserRouter>
             </React.Fragment>

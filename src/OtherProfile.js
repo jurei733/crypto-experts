@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import FriendButton from "./FriendButton";
 import axios from "./axios.js";
 

@@ -1,4 +1,13 @@
-export default function (state = { friendsWannabes: [] }, action) {
+export default function (
+    state = {
+        chatMessages: [],
+        friendsWannabes: [],
+        coins: [],
+        global: [],
+        history: [],
+    },
+    action
+) {
     console.log(action);
     console.log("FRIENDS WANNABES REDUCER", action.friendsList);
     if (action.type == "RECEIVE_FRIENDS_WANNABES") {
@@ -27,6 +36,32 @@ export default function (state = { friendsWannabes: [] }, action) {
                     return false;
                 }
             }),
+        };
+    } else if (action.type == "CHAT_MESSAGES") {
+        state = {
+            ...state,
+            chatMessages: action.chatMessages,
+        };
+    } else if (action.type == "SEND_MESSAGE") {
+        state = {
+            ...state,
+            chatMessages: [...state.chatMessages, action.chatMessage],
+        };
+    } else if (action.type == "RECEIVE_COINS") {
+        state = {
+            ...state,
+            coins: action.coins,
+        };
+    } else if (action.type == "RECEIVE_GLOBAL_COIN_DATA") {
+        state = {
+            ...state,
+            global: action.global,
+        };
+    } else if (action.type == "RECEIVE_COIN_DATA") {
+        state = {
+            ...state,
+            coin: action.coin,
+            history: action.history,
         };
     }
 

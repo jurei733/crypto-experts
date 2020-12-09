@@ -37,6 +37,12 @@ export default function IncrementalSearch() {
         return (
             <React.Fragment>
                 <h1>Find People!</h1>
+                <input
+                    type="search"
+                    name="query"
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                />
                 <h2>Checkout who just joined!</h2>
                 <div className="userOverview">
                     {users.map((user) => (
@@ -49,13 +55,6 @@ export default function IncrementalSearch() {
                         </div>
                     ))}
                 </div>
-                <h1>Are you looking for someone in particular?</h1>
-                <input
-                    type="search"
-                    name="query"
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                />
             </React.Fragment>
         );
     } else {

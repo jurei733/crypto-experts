@@ -126,3 +126,16 @@ module.exports.friendsWannabes = function friendsWannabes(id) {
         [id]
     );
 };
+
+module.exports.getChatMessages = function getChatMessages() {
+    return db.query(
+        "SELECT firstname,lastname,image, chats.message, chats.created_at, chats.users_id FROM users JOIN chats ON chats.users_id = users.id ORDER BY created_at DESC LIMIT 10"
+    );
+};
+
+module.exports.addMessage = function addMessage(id, message) {
+    return db.query(
+        "INSERT INTO chats (users_id, message) VALUES ($1,$2) RETURNING *, (SELECT firstname FROM users WHERE id=$1), (SELECT lastname FROM users WHERE id=$1), (SELECT image FROM users WHERE id=$1)",
+        [id, message]
+    );
+};

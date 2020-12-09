@@ -5,6 +5,7 @@ import reduxPromise from "redux-promise";
 import { composeWithDevTools } from "redux-devtools-extension";
 import reducer from "./reducer.js";
 import { Provider } from "react-redux";
+import { init } from "./socket.js";
 
 const store = createStore(
     reducer,
@@ -19,6 +20,7 @@ let component = null;
 if (location.pathname === "/welcome") {
     component = <Welcome />;
 } else {
+    init(store);
     component = (
         <Provider store={store}>
             <App />

@@ -29,7 +29,7 @@ export default function Friends() {
             <h2> This people want to be your friend </h2>
             <div>
                 {friendRequester.map((friendReq) => (
-                    <div className="userOverview" key={friendReq.id}>
+                    <div key={friendReq.id}>
                         <img src={friendReq.image} />
                         <Link className="link" to={`/user/${friendReq.id}`}>
                             {friendReq.firstname}
@@ -50,7 +50,7 @@ export default function Friends() {
             <h2> This people are currently your friends </h2>
             <div>
                 {friends.map((friend) => (
-                    <div className="userOverview" key={friend.id}>
+                    <div key={friend.id}>
                         <img src={friend.image} />
                         <Link className="link" to={`/user/${friend.id}`}>
                             {friend.firstname}

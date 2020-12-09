@@ -147,6 +147,7 @@ textarea {
 }
 
 #appHeader .headerIcon {
+    margin: 20px;
     width: 120px;
     height: 120px;
 }
@@ -171,4 +172,148 @@ textarea {
 .link {
     font-size: 30px;
     color: white;
+}
+
+.coin {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 50px;
+    border: 1px rgba(31, 64, 181) solid;
+}
+
+.coin:hover {
+    background-color: rgba(31, 64, 181, 0.5);
+}
+
+.coinRank {
+    min-width: 50px;
+    font-size: 40px;
+    margin-right: 50px;
+    margin-left: 20px;
+}
+.coin img {
+    min-width: 100px;
+    height: 100px;
+    margin-right: 50px;
+}
+
+.coinNaming {
+    min-width: 200px;
+    display: block;
+    font-size: 25px;
+    margin-right: 50px;
+}
+
+.coinPrice {
+    min-width: 200px;
+    font-size: 40px;
+    margin-right: 50px;
+}
+
+.coinMarketCap {
+    min-width: 200px;
+    font-size: 40px;
+    margin-right: 50px;
+}
+
+.coinMarketCapChange {
+    min-width: 200px;
+    font-size: 40px;
+    margin-right: 50px;
+}
+
+.coinPriceChange {
+    min-width: 200px;
+    font-size: 40px;
+    margin-right: 50px;
+}
+
+#marketOverview {
+    height: 100px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 50px;
+    border: 1px rgba(31, 64, 181) solid;
+    font-size: 40px;
+}
+
+.green {
+    color: green;
+}
+
+.red {
+    color: red;
+}
+
+.chat-message {
+    display: flex;
+    flex-direction: row;
+    background-color: #1f40b5;
+    color: gold;
+    padding: 20px;
+}
+
+.chat {
+    margin: 50px;
+    border: 5px solid #1f40b5;
+}
+
+.chat-container {
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.chatImage {
+    width: 80px;
+    height: 80px;
+    margin-right: 50px;
+}
+
+.chatInfo {
+    font-size: 20px;
+}
+
+#chatInput {
+    border-top: 5px gold solid;
+    height: 200px;
+    width: 100%;
+    color: gold;
+    background-color: #1f40b5;
+}
+
+.chatInfo b {
+    font-weight: bold;
+}
+
+.chatText {
+    font-size: 25px;
+}
+
+.chat button {
+    margin-top: 10px;
+    float: right;
+    color: gold;
+    background-color: #1f40b5;
+    font-size: 25px;
+    padding: 5px;
+}
+
+.chat button:hover {
+    cursor: pointer;
+}
+
+.chat-container::-webkit-scrollbar {
+    width: 15px; /* width of the entire scrollbar */
+}
+
+.chat-container::-webkit-scrollbar-track {
+    background: gold; /* color of the tracking area */
+}
+
+.chat-container::-webkit-scrollbar-thumb {
+    background-color: blue; /* color of the scroll thumb */
+    border-radius: 20px; /* roundness of the scroll thumb */
+    border: 4px solid gold; /* creates padding around scroll thumb */
 }

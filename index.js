@@ -1,5 +1,9 @@
 const express = require("express");
 const app = express();
+
+const server = require("http").createServer(app);
+const io = require("socket.io")(server);
+
 const compression = require("compression");
 const session = require("cookie-session");
 const bcrypt = require("bcryptjs");
@@ -12,16 +16,21 @@ const uploader = require("./middlewares/uploader.js");
 const s3 = require("./middlewares/s3.js");
 const CoinGecko = require("coingecko-api");
 
+const CoinGeckoClient = new CoinGecko();
+
 app.use(compression());
 
 app.use(express.json());
 
-app.use(
-    session({
-        secret: secrets.sessionSecret,
-        maxAge: 30 * 24 * 60 * 60 * 1000,
-    })
-);
+const sessionMiddleware = session({
+    secret: secrets.sessionSecret,
+    maxAge: 30 * 24 * 60 * 60 * 1000,
+});
+app.use(sessionMiddleware);
+
+io.use(function (socket, next) {
+    sessionMiddleware(socket.request, socket.request.res, next);
+});
 
 if (process.env.NODE_ENV != "production") {
     app.use(
@@ -267,9 +276,28 @@ app.get("/friends-wannabes", async (req, res) => {
 });
 
 app.get("/api/coins", async (req, res) => {
-    const CoinGeckoClient = new CoinGecko();
-    let { data } = await CoinGeckoClient.coins.markets();
-    console.log(data[0]);
+    let { data } = await CoinGeckoClient.coins.markets({
+        per_page: 10,
+        page: 1,
+    });
+    res.json(data);
+});
+
+app.get("/api/coins/global", async (req, res) => {
+    let { data } = await CoinGeckoClient.global();
+    res.json(data);
+});
+
+app.get("/api/coin/:id", async (req, res) => {
+    let { data } = await CoinGeckoClient.coins.fetch(req.params.id);
+    //console.log(data);
+    res.json(data);
+});
+
+app.get("/api/coin/history/:id", async (req, res) => {
+    let { data } = await CoinGeckoClient.coins.fetchMarketChart(req.params.id);
+    //console.log(data);
+    //console.log(data);
     res.json(data);
 });
 
@@ -281,6 +309,25 @@ app.get("*", function (req, res) {
     }
 });
 
-app.listen(8080, function () {
+server.listen(8080, function () {
     console.log("I'm listening.");
+});
+
+io.on("connection", async (socket) => {
+    console.log("USER_CONNECTED", socket.id);
+    const userId = socket.request.session.userId;
+    if (!userId) {
+        return socket.disconnect(true);
+    }
+    const { rows } = await db.getChatMessages();
+
+    socket.emit("chatMessages", rows.reverse());
+
+    socket.on("chatMessage", async (msg) => {
+        console.log("TEST");
+        let data = await db.addMessage(userId, msg);
+        console.log(data.rows[0]);
+
+        io.emit("chatMessage", data.rows[0]);
+    });
 });
