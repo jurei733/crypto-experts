@@ -41,6 +41,12 @@ export async function sendMessage(chatMessage) {
     };
 }
 
+export async function logout() {
+    return {
+        type: "LOGOUT",
+    };
+}
+
 export async function receiveCoins() {
     let { data } = await axios.get("/api/coins");
     return {
@@ -49,19 +55,25 @@ export async function receiveCoins() {
     };
 }
 
-export async function buyCoin() {
-    let { data } = await axios.get("/api/coins");
+export async function buyCoin(coinId) {
+    let { data } = await axios.get(
+        "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd"
+    );
+    console.log("PRICE", data.bitcoin.usd);
+    await axios.post(`/api/coin/buy/${coinId}`, { price: data.bitcoin.usd });
     return {
         type: "BUY_COIN",
-        coins: data,
     };
 }
 
-export async function sellCoin() {
-    let { data } = await axios.get("/api/coins");
+export async function sellCoin(coinId) {
+    let { data } = await axios.get(
+        "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd"
+    );
+    console.log("PRICE", data.bitcoin.usd);
+    await axios.get(`/api/coin/sell/${coinId}`);
     return {
         type: "SELL_COIN",
-        coins: data,
     };
 }
 
@@ -75,13 +87,13 @@ export async function receiveGlobalCoinData() {
 }
 
 export async function receiveCoinData(id) {
-    let { data } = await axios.get(`/api/coin/${id}`);
+    let coin = await axios.get(`/api/coin/${id}`);
     let history = await axios.get(`/api/coin/history/${id}`);
     console.log("HISTORY DATA", history.data);
-    console.log("GLOBAL DATA", data.data);
+    console.log("GLOBAL DATA", coin.data);
     return {
         type: "RECEIVE_COIN_DATA",
-        coin: data,
+        coin: coin.data,
         history: history.data.prices,
     };
 }

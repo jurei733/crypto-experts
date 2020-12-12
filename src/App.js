@@ -4,6 +4,7 @@ import Logo from "./Logo.js";
 import Profile from "./Profile";
 import Coins from "./Coins";
 import Coin from "./Coin";
+import Ranking from "./Ranking";
 import OtherProfile from "./OtherProfile";
 import ProfilePic from "./ProfilePic";
 import Chat from "./Chat";
@@ -12,12 +13,14 @@ import Uploader from "./Uploader";
 import FindPeople from "./FindPeople";
 import { Link } from "react-router-dom";
 import axios from "./axios.js";
+import { socket } from "./socket.js";
 
 export default class App extends React.Component {
     constructor() {
         super();
 
         this.state = {
+            activeUsers: undefined,
             profilePic: undefined,
             uploaderVisible: false,
             error: false,
@@ -34,6 +37,14 @@ export default class App extends React.Component {
 
     componentDidMount() {
         this.getUser();
+        this.getActiveUsers();
+    }
+
+    async getActiveUsers() {
+        let { data } = await axios.get("/activeUsers");
+        this.setState({
+            activeUsers: data,
+        });
     }
 
     getUser() {
@@ -81,11 +92,16 @@ export default class App extends React.Component {
                     {this.state.error && <p>DIDNT WORK, TOO BAD, BYE.</p>}
                     <div id="appHeader">
                         <Logo />
-
                         <Link to="/coins">
                             <img
                                 className="headerIcon"
                                 src="/stats-icon.png"
+                            ></img>
+                        </Link>
+                        <Link to="/ranking">
+                            <img
+                                className="headerIcon"
+                                src="/ranking-icon.png"
                             ></img>
                         </Link>
                         <Link to="/users">
@@ -107,13 +123,26 @@ export default class App extends React.Component {
                             ></img>
                         </Link>
 
-                        <ProfilePic
-                            profilePic={this.state.profilePic}
-                            className="smallProfilePicture"
-                            firstname={this.state.firstname}
-                            lastname={this.state.lastname}
-                            toggleUploader={this.toggleUploader}
-                        />
+                        <div>
+                            <ProfilePic
+                                profilePic={this.state.profilePic}
+                                className="smallProfilePicture"
+                                firstname={this.state.firstname}
+                                lastname={this.state.lastname}
+                                toggleUploader={this.toggleUploader}
+                            />
+                            <span
+                                id="logout"
+                                onClick={() => {
+                                    socket.close();
+                                    axios.get("/logout").then(() => {
+                                        location.replace("/");
+                                    });
+                                }}
+                            >
+                                Logout
+                            </span>
+                        </div>
                     </div>
                     {this.state.uploaderVisible && (
                         <Uploader
@@ -122,6 +151,7 @@ export default class App extends React.Component {
                         />
                     )}
                     <React.Fragment>
+                        Active Users:{this.state.activeUsers}
                         <Route
                             exact
                             path="/"
@@ -153,6 +183,7 @@ export default class App extends React.Component {
                         <Route path="/friends" render={() => <Friends />} />
                         <Route path="/coin/:name" component={Coin} />
                         <Route path="/chat" component={Chat} />
+                        <Route path="/ranking" component={Ranking} />
                     </React.Fragment>
                 </BrowserRouter>
             </React.Fragment>

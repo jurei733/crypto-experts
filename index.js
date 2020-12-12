@@ -17,6 +17,7 @@ const s3 = require("./middlewares/s3.js");
 const CoinGecko = require("coingecko-api");
 
 const CoinGeckoClient = new CoinGecko();
+let connectedList = [];
 
 app.use(compression());
 
@@ -54,9 +55,13 @@ app.use((req, res, next) => {
 });
 
 app.get("/welcome", (req, res) => {
+    console.log("I am in Welcome Route");
+    console.log(req.query);
     if (req.session.userId) {
         res.redirect("/");
     } else {
+        console.log("I AM in else Blcok");
+        console.log(connectedList);
         res.sendFile(__dirname + "/index.html");
     }
 });
@@ -301,6 +306,38 @@ app.get("/api/coin/history/:id", async (req, res) => {
     res.json(data);
 });
 
+app.post("/api/coin/buy/:name", async (req, res) => {
+    //let { data } = await CoinGeckoClient.coins.fetch(req.params.id);
+    console.log("REQ", req.body.price);
+    console.log("QUERY PARAMETERS", req.params);
+    try {
+        await db.buyCoin(req.session.userId, 3, req.params.name);
+    } catch (e) {
+        res.sendStatus(400);
+    }
+    await db.updateBalance();
+});
+
+app.post("/api/coin/sell", (req, res) => {
+    db.sellCoin();
+});
+
+app.get("/activeUsers", async (req, res) => {
+    console.log("ACTIVE USERS", connectedList);
+
+    res.json(connectedList.length);
+});
+
+app.get("/logout", (req, res) => {
+    let arrItem = connectedList.indexOf(req.session.userId);
+    delete connectedList[arrItem];
+    connectedList = connectedList.filter(function (el) {
+        return el != null;
+    });
+    req.session = null;
+    res.redirect(`/login`);
+});
+
 app.get("*", function (req, res) {
     if (!req.session.userId) {
         res.redirect("/welcome");
@@ -315,16 +352,19 @@ server.listen(8080, function () {
 
 io.on("connection", async (socket) => {
     console.log("USER_CONNECTED", socket.id);
+
     const userId = socket.request.session.userId;
     if (!userId) {
         return socket.disconnect(true);
     }
+    if (!connectedList.includes(userId)) connectedList.push(userId);
+    console.log("connectedList", connectedList);
+
     const { rows } = await db.getChatMessages();
 
     socket.emit("chatMessages", rows.reverse());
 
     socket.on("chatMessage", async (msg) => {
-        console.log("TEST");
         let data = await db.addMessage(userId, msg);
         console.log(data.rows[0]);
 

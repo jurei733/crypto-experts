@@ -1,12 +1,14 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { receiveCoinData } from "./actions.js";
+import { receiveCoinData, buyCoin, sellCoin } from "./actions.js";
 import Chart from "chart.js";
+import axios from "./axios";
 import { Link } from "react-router-dom";
 
 export default function Coins(props) {
     const canvas = useRef();
     const dispatch = useDispatch();
+    const [modal, setModal] = useState(false);
 
     useEffect(() => {
         dispatch(receiveCoinData(props.match.params.name));
@@ -37,7 +39,7 @@ export default function Coins(props) {
             labels: coinDates,
             datasets: [
                 {
-                    label: "TeamA Score",
+                    label: "Chart",
                     data: coinPrices,
                     backgroundColor: "blue",
                     borderColor: "lightblue",
@@ -82,11 +84,23 @@ export default function Coins(props) {
 
     return (
         <React.Fragment>
-            <button>Buy</button>
-            <button>Sell</button>
-            <canvas ref={canvas} id="myChart"></canvas>
+            <div id="coinTitle">
+                <img src={coin && coin.image.small} />
+                <h1>{coin && coin.name}</h1>
+                <h2>{coin && coin.symbol.toUpperCase()}</h2>
+            </div>
+            <button onClick={() => dispatch(buyCoin(coin.id))}>Buy</button>
+            <button onClick={() => dispatch(sellCoin(coin.id))}>Sell</button>
 
-            <p>Here should be one coin.</p>
+            <canvas ref={canvas} id="myChart"></canvas>
+            {modal && (
+                <div>
+                    <p> This is what you want to buy/sell? </p>
+
+                    <button onClick={() => setModal(false)}>NO </button>
+                    <button onClick={() => addOrderbook()}>YES</button>
+                </div>
+            )}
         </React.Fragment>
     );
 }

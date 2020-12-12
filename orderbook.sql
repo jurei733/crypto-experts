@@ -1,0 +1,7 @@
+CREATE TABLE orderbook (
+    id SERIAL PRIMARY KEY,
+    amount INTEGER NOT NULL,
+    currency VARCHAR NOT NULL,
+    users_id INTEGER NOT NULL REFERENCES users(id),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

@@ -139,3 +139,28 @@ module.exports.addMessage = function addMessage(id, message) {
         [id, message]
     );
 };
+
+module.exports.buyCoin = function buyCoin(id, amount, currency) {
+    return db.query(
+        "INSERT INTO orderbook (users_id, amount, currency) VALUES ($1,$2,$3)",
+        [id, amount, currency]
+    );
+};
+
+module.exports.sellCoin = function sellCoin(id, amount, currency) {
+    return db.query(
+        "INSERT INTO orderbook (users_id, amount, currency) VALUES ($1,$2,$3)",
+        [id, amount, currency]
+    );
+};
+
+module.exports.updateBalance = function updateBalance(userId, balance) {
+    return db.query(
+        "UPDATE users SET balance=$2 WHERE id=$1 RETURNING balance",
+        [userId, balance]
+    );
+};
+
+module.exports.getBalance = function getBalance(userId) {
+    return db.query("SELECT balance FROM users WHERE id=$1", [userId]);
+};
