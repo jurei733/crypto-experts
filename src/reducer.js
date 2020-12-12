@@ -5,11 +5,13 @@ export default function (
         coins: [],
         global: [],
         history: [],
+        user: [],
+        weekHistory: [],
     },
     action
 ) {
     console.log(action);
-    console.log("FRIENDS WANNABES REDUCER", action.friendsList);
+
     if (action.type == "RECEIVE_FRIENDS_WANNABES") {
         state = { ...state, friendsWannabes: action.friendsList };
     } else if (action.type == "ACCEPT_FRIEND_REQUEST") {
@@ -62,6 +64,12 @@ export default function (
             ...state,
             coin: action.coin,
             history: action.history,
+            weekHistory: action.weekHistory,
+        };
+    } else if (action.type == "RECEIVE_USER_DATA") {
+        state = {
+            ...state,
+            user: action.user,
         };
     }
 

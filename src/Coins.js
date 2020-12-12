@@ -14,25 +14,16 @@ export default function Coins() {
     const coins = useSelector((store) => store.coins);
     const global = useSelector((store) => store.global);
 
-    const logCoins = () => {
-        for (let i = 0; i < 10; i++) {
-            console.log(coins[i]);
-        }
-    };
-
-    const britishNumberFormatter = new Intl.NumberFormat("en-GB", {
-        minimumFractionDigits: 2,
-    });
-
     return (
         <div id="coinOverview">
             <div id="marketOverview">
                 <p>
                     BTC-Dominance:
                     {global.market_cap_percentage &&
-                        britishNumberFormatter.format(
-                            global.market_cap_percentage.btc
-                        )}
+                        new Intl.NumberFormat("en-GB", {
+                            minimumFractionDigits: 2,
+                        }).format(global.market_cap_percentage.btc)}
+                    {global.market_cap_change_percentage_24h_usd}
                 </p>
             </div>
 
@@ -44,19 +35,43 @@ export default function Coins() {
                         <p>{coin.symbol.toUpperCase()}</p>
                         <p>{coin.name}</p>
                     </div>
-                    <p className="coinPrice">{coin.current_price}</p>
-                    <p className="coinMarketCap">{coin.market_cap}</p>
-                    <p className="coinMarketCapChange green">
-                        {coin.price_change_percentage_24h}▲
+                    <p className="coinPrice">
+                        {new Intl.NumberFormat("de-DE", {
+                            style: "currency",
+                            currency: "USD",
+                        }).format(coin.current_price)}
                     </p>
-                    <p className="coinPriceChange">
-                        {coin.market_cap_change_percentage_24h}▼
+                    <p className="coinMarketCap">
+                        {new Intl.NumberFormat("de-DE", {
+                            style: "currency",
+                            currency: "USD",
+                            maximumSignificantDigits: 6,
+                        }).format(coin.market_cap)}
+                    </p>
+                    <p
+                        className={
+                            coin.price_change_percentage_24h > 0
+                                ? "coinPriceChange green"
+                                : "coinPriceChange red"
+                        }
+                    >
+                        {new Intl.NumberFormat("de-DE", {
+                            maximumFractionDigits: 2,
+                        }).format(coin.price_change_percentage_24h)}
+                    </p>
+                    <p
+                        className={
+                            coin.market_cap_change_percentage_24h > 0
+                                ? "coinPriceChange green"
+                                : "coinPriceChange red"
+                        }
+                    >
+                        {new Intl.NumberFormat("de-DE", {
+                            maximumFractionDigits: 2,
+                        }).format(coin.market_cap_change_percentage_24h)}
                     </p>
                 </Link>
             ))}
-            <button onClick={() => logCoins()}>SHOW COINS</button>
-
-            <p>Here should be all the coins.</p>
         </div>
     );
 }

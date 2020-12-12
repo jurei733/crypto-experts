@@ -7,6 +7,8 @@ import { Link } from "react-router-dom";
 
 export default function Coins(props) {
     const canvas = useRef();
+    const sellAmount = useRef();
+    const buyAmount = useRef();
     const dispatch = useDispatch();
     const [modal, setModal] = useState(false);
 
@@ -89,8 +91,22 @@ export default function Coins(props) {
                 <h1>{coin && coin.name}</h1>
                 <h2>{coin && coin.symbol.toUpperCase()}</h2>
             </div>
-            <button onClick={() => dispatch(buyCoin(coin.id))}>Buy</button>
-            <button onClick={() => dispatch(sellCoin(coin.id))}>Sell</button>
+            <button
+                onClick={() =>
+                    dispatch(buyCoin(coin.id, buyAmount.current.value))
+                }
+            >
+                Buy
+            </button>
+            <input ref={buyAmount} name="buy" type="number"></input>
+            <button
+                onClick={() =>
+                    dispatch(sellCoin(coin.id, sellAmount.current.value))
+                }
+            >
+                Sell
+            </button>
+            <input ref={sellAmount} name="sell" type="number"></input>
 
             <canvas ref={canvas} id="myChart"></canvas>
             {modal && (

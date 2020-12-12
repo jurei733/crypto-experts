@@ -301,25 +301,57 @@ app.get("/api/coin/:id", async (req, res) => {
 
 app.get("/api/coin/history/:id", async (req, res) => {
     let { data } = await CoinGeckoClient.coins.fetchMarketChart(req.params.id);
-    //console.log(data);
-    //console.log(data);
+
     res.json(data);
 });
 
 app.post("/api/coin/buy/:name", async (req, res) => {
-    //let { data } = await CoinGeckoClient.coins.fetch(req.params.id);
-    console.log("REQ", req.body.price);
-    console.log("QUERY PARAMETERS", req.params);
+    console.log(
+        "Buy Order",
+        req.params,
+        req.body.price,
+        "Amount",
+        req.body.amount
+    );
+    let totalBuyOrder = Math.round(req.body.amount * req.body.price);
+    console.log("totalBuyOrder", totalBuyOrder);
     try {
-        await db.buyCoin(req.session.userId, 3, req.params.name);
+        await db.buyCoin(req.session.userId, req.body.amount, req.params.name);
     } catch (e) {
+        console.log("END UP IN CATCH");
         res.sendStatus(400);
     }
-    await db.updateBalance();
+    let balance = await db.getBalance(req.session.userId);
+    console.log("BALANCE BEFORE BOUGHT", balance.rows[0].balance);
+    let newBalance = balance.rows[0].balance - totalBuyOrder;
+    console.log("NEW BALANCE", newBalance);
+    await db.updateBalance(req.session.userId, newBalance);
+    let updatedBalance = await db.getBalance(req.session.userId);
+    console.log("Updated Balance", updatedBalance.rows[0].balance);
 });
 
-app.post("/api/coin/sell", (req, res) => {
-    db.sellCoin();
+app.post("/api/coin/sell/:name", async (req, res) => {
+    console.log("REQ", req.body.price);
+    console.log("QUERY PARAMETERS", req.params);
+    let coinAmount = req.body.amount;
+    let value = coinAmount * req.body.price;
+
+    try {
+        await db.sellCoin(req.session.userId, coinAmount, req.params.name);
+    } catch (e) {
+        console.log("END UP IN CATCH");
+        res.sendStatus(400);
+    }
+    let balance = await db.getBalance(req.session.userId);
+    console.log(balance.rows[0].balance);
+    let newBalance = Math.round(balance.rows[0].balance + value);
+    console.log(newBalance);
+    await db.updateBalance(req.session.userId, newBalance);
+});
+
+app.get("/api/coins/balance", (req, res) => {
+    console.log("TEST2");
+    db.getCoinsBalance(req.session.userId);
 });
 
 app.get("/activeUsers", async (req, res) => {

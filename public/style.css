@@ -177,9 +177,12 @@ textarea {
 .coin {
     display: flex;
     flex-direction: row;
-    align-items: center;
-    margin: 50px;
+    justify-content: space-evenly;
+    margin-left: 50px;
+    margin-right: 50px;
+    text-decoration: none;
     border: 1px rgba(31, 64, 181) solid;
+    color: rgba(31, 64, 181);
 }
 
 .coin:hover {
@@ -187,15 +190,12 @@ textarea {
 }
 
 .coinRank {
-    min-width: 50px;
     font-size: 40px;
-    margin-right: 50px;
-    margin-left: 20px;
 }
 .coin img {
-    min-width: 100px;
+    padding-top: 10px;
+
     height: 100px;
-    margin-right: 50px;
 }
 
 .coinNaming {
@@ -242,9 +242,20 @@ textarea {
 .green {
     color: green;
 }
+.green::before {
+    content: "+";
+}
+
+.green::after {
+    content: "% ▲";
+}
 
 .red {
     color: red;
+}
+
+.red::after {
+    content: "% ▼";
 }
 
 .chat-message {
