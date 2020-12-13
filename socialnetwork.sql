@@ -11,6 +11,7 @@ CREATE TABLE users (
     image VARCHAR,
     bio VARCHAR,
     password VARCHAR(100) NOT NULL,
+    balance INTEGER DEFAULT 100000,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

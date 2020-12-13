@@ -315,14 +315,16 @@ app.post("/api/coin/buy/:name", async (req, res) => {
     );
     let totalBuyOrder = Math.round(req.body.amount * req.body.price);
     console.log("totalBuyOrder", totalBuyOrder);
+    let balance = await db.getBalance(req.session.userId);
+    console.log("BALANCE BEFORE BUY ORDER", balance.rows[0].balance);
+    if (totalBuyOrder > balance) return res.sendStatus(400);
     try {
         await db.buyCoin(req.session.userId, req.body.amount, req.params.name);
     } catch (e) {
         console.log("END UP IN CATCH");
         res.sendStatus(400);
     }
-    let balance = await db.getBalance(req.session.userId);
-    console.log("BALANCE BEFORE BOUGHT", balance.rows[0].balance);
+
     let newBalance = balance.rows[0].balance - totalBuyOrder;
     console.log("NEW BALANCE", newBalance);
     await db.updateBalance(req.session.userId, newBalance);
@@ -331,27 +333,63 @@ app.post("/api/coin/buy/:name", async (req, res) => {
 });
 
 app.post("/api/coin/sell/:name", async (req, res) => {
-    console.log("REQ", req.body.price);
-    console.log("QUERY PARAMETERS", req.params);
-    let coinAmount = req.body.amount;
-    let value = coinAmount * req.body.price;
+    console.log(
+        "SELL ORDER",
+        req.params,
+        req.body.price,
+        "AMOUNT",
+        req.body.amount
+    );
+
+    let totalSellOrder = Math.round(req.body.amount * req.body.price);
 
     try {
-        await db.sellCoin(req.session.userId, coinAmount, req.params.name);
+        await db.sellCoin(
+            req.session.userId,
+            -req.body.amount,
+            req.params.name
+        );
     } catch (e) {
         console.log("END UP IN CATCH");
         res.sendStatus(400);
     }
     let balance = await db.getBalance(req.session.userId);
     console.log(balance.rows[0].balance);
-    let newBalance = Math.round(balance.rows[0].balance + value);
+    let newBalance = Math.round(balance.rows[0].balance + totalSellOrder);
     console.log(newBalance);
     await db.updateBalance(req.session.userId, newBalance);
 });
 
-app.get("/api/coins/balance", (req, res) => {
-    console.log("TEST2");
-    db.getCoinsBalance(req.session.userId);
+app.get("/api/coins/balance", async (req, res) => {
+    try {
+        let { rows } = await db.getCoinsBalance(req.session.userId);
+        console.log("DATA", rows);
+        res.json(rows);
+
+        /*CoinGeckoClient.coins.fetch("bitcoin", "ethereum").then((data) => {
+            console.log(data);
+        });
+
+        let coinBalance = [];
+        rows.forEach((coin, idx, array) => {
+            CoinGeckoClient.coins.fetch(coin.currency).then((data) => {
+                let value =
+                    data.data.market_data.current_price.usd * coin.amount;
+                console.log(data.data.market_data.current_price.usd);
+                console.log(coin.amount);
+                console.log(value);
+                coinBalance.push(value);
+                if (idx === array.length - 1) {
+                    console.log(coinBalance);
+                    res.json(coinBalance);
+                }
+                console.log("DUDU", coinBalance);
+
+            });
+        });*/
+    } catch (e) {
+        console.log(e);
+    }
 });
 
 app.get("/activeUsers", async (req, res) => {

@@ -5,6 +5,7 @@ import Profile from "./Profile";
 import Coins from "./Coins";
 import Coin from "./Coin";
 import Ranking from "./Ranking";
+import News from "./News";
 import OtherProfile from "./OtherProfile";
 import ProfilePic from "./ProfilePic";
 import Chat from "./Chat";
@@ -184,6 +185,7 @@ export default class App extends React.Component {
                         <Route path="/coin/:name" component={Coin} />
                         <Route path="/chat" component={Chat} />
                         <Route path="/ranking" component={Ranking} />
+                        <Route path="/news" component={News} />
                     </React.Fragment>
                 </BrowserRouter>
             </React.Fragment>

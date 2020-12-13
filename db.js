@@ -166,5 +166,8 @@ module.exports.getBalance = function getBalance(userId) {
 };
 
 module.exports.getCoinsBalance = function getCoinsBalance(userId) {
-    return db.query("SELECT * FROM orderbook WHERE users_id=$1", [userId]);
+    return db.query(
+        "SELECT SUM(amount), currency FROM orderbook WHERE users_id=$1 GROUP BY currency",
+        [userId]
+    );
 };

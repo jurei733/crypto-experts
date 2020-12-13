@@ -44,7 +44,7 @@ export default function Coins(props) {
                     label: "Chart",
                     data: coinPrices,
                     backgroundColor: "blue",
-                    borderColor: "lightblue",
+                    borderColor: "black",
                     fill: false,
                     lineTension: 0,
                     radius: 5,

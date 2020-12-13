@@ -124,10 +124,32 @@ export async function receiveCoinData(id) {
 }
 
 export async function receiveCoinsBalance() {
-    console.log("TEST");
     let { data } = await axios.get("/api/coins/balance");
+    let currencies = data.map((coin) => coin.currency);
+    let copyCurr = currencies;
+    console.log("CURRENCIES", currencies);
+    let stringAPI = "";
+    currencies.forEach((element) => {
+        stringAPI += element + "%2C";
+    });
+    console.log("STRING-API", stringAPI);
+    let currenciesPrices = await axios.get(
+        `https://api.coingecko.com/api/v3/simple/price?ids=${stringAPI}&vs_currencies=usd`
+    );
+    console.log("CurrenciesPrices", currenciesPrices);
+    console.log("CurrenciesPrices", currenciesPrices.data.bitcoin);
+    data.forEach(function (element, i) {
+        console.log("INDEX", i);
+        element.price = currenciesPrices.data[copyCurr[i]].usd;
+        element.total = currenciesPrices.data[copyCurr[i]].usd * data[i].sum;
+    });
+    console.log("CurrenciesPrices", currenciesPrices);
     console.log("COIN BALANCE", data);
+    let totals = data.map((el) => el.total);
     return {
         type: "RECEIVE_COIN_BALANCE",
+        coinBalance: data,
+        currencies,
+        totals,
     };
 }

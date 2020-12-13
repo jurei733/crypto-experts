@@ -71,6 +71,13 @@ export default function (
             ...state,
             user: action.user,
         };
+    } else if (action.type == "RECEIVE_COIN_BALANCE") {
+        state = {
+            ...state,
+            coinBalance: action.coinBalance,
+            currencies: action.currencies,
+            totals: action.totals,
+        };
     }
 
     return state;
