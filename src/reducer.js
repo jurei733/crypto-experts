@@ -5,8 +5,11 @@ export default function (
         coins: [],
         global: [],
         history: [],
-        user: [],
+        user: {},
         weekHistory: [],
+        currencies: [],
+        totals: [],
+        totalSum: null,
     },
     action
 ) {
@@ -77,6 +80,17 @@ export default function (
             coinBalance: action.coinBalance,
             currencies: action.currencies,
             totals: action.totals,
+            totalSum: action.totalSum,
+        };
+    } else if (action.type == "RECEIVE_RANKING") {
+        state = {
+            ...state,
+            userRanking: action.userRanking,
+        };
+    } else if (action.type == "HISTORY_DATA") {
+        state = {
+            ...state,
+            history: action.history,
         };
     }
 

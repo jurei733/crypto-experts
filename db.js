@@ -171,3 +171,7 @@ module.exports.getCoinsBalance = function getCoinsBalance(userId) {
         [userId]
     );
 };
+
+module.exports.getRanking = function getRanking() {
+    return db.query("SELECT id,firstname,lastname,image, balance FROM users");
+};

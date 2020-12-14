@@ -9,7 +9,7 @@ export default function Coins() {
     useEffect(() => {
         dispatch(receiveCoins());
         dispatch(receiveGlobalCoinData());
-    }, []);
+    }, [coins, global]);
 
     const coins = useSelector((store) => store.coins);
     const global = useSelector((store) => store.global);
@@ -22,8 +22,23 @@ export default function Coins() {
                     {global.market_cap_percentage &&
                         new Intl.NumberFormat("en-GB", {
                             minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
                         }).format(global.market_cap_percentage.btc)}
-                    {global.market_cap_change_percentage_24h_usd}
+                    %
+                </p>
+                <p
+                    className={
+                        global.price_change_percentage_24h > 0
+                            ? " globalMarketCapPercentage green"
+                            : " globalMarketCapPercentage red"
+                    }
+                >
+                    {global.market_cap_change_percentage_24h_usd &&
+                        new Intl.NumberFormat("en-GB", {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                        }).format(global.market_cap_change_percentage_24h_usd)}
+                    (24h)
                 </p>
             </div>
 

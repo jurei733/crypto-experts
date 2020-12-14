@@ -169,7 +169,7 @@ app.get("/user", function (req, res) {
     db.getProfile(req.session.userId).then(({ rows }) => {
         if (rows.length === 0) return res.sendStatus(400);
         //console.log("Profile Informations", rows);
-        res.json(rows);
+        res.json(rows[0]);
     });
 });
 
@@ -360,33 +360,45 @@ app.post("/api/coin/sell/:name", async (req, res) => {
     await db.updateBalance(req.session.userId, newBalance);
 });
 
-app.get("/api/coins/balance", async (req, res) => {
+app.get("/api/coins/balance/", async (req, res) => {
     try {
+        /*if (req.params.id) {
+            let { rows } = await db.getCoinsBalance(req.params.id);
+            console.log("DATA", rows);
+            return res.json(rows);
+        }*/
         let { rows } = await db.getCoinsBalance(req.session.userId);
         console.log("DATA", rows);
         res.json(rows);
+    } catch (e) {
+        console.log(e);
+    }
+});
 
-        /*CoinGeckoClient.coins.fetch("bitcoin", "ethereum").then((data) => {
-            console.log(data);
-        });
+app.get("/api/coins/balance/user/:id", async (req, res) => {
+    try {
+        /*if (req.params.id) {
+            let { rows } = await db.getCoinsBalance(req.params.id);
+            console.log("DATA", rows);
+            return res.json(rows);
+        }*/
+        let { rows } = await db.getCoinsBalance(req.params.id);
+        console.log("DATA", rows);
+        res.json(rows);
+    } catch (e) {
+        console.log(e);
+    }
+});
 
-        let coinBalance = [];
-        rows.forEach((coin, idx, array) => {
-            CoinGeckoClient.coins.fetch(coin.currency).then((data) => {
-                let value =
-                    data.data.market_data.current_price.usd * coin.amount;
-                console.log(data.data.market_data.current_price.usd);
-                console.log(coin.amount);
-                console.log(value);
-                coinBalance.push(value);
-                if (idx === array.length - 1) {
-                    console.log(coinBalance);
-                    res.json(coinBalance);
-                }
-                console.log("DUDU", coinBalance);
+app.get("/api/ranking", async (req, res) => {
+    try {
+        let { rows } = await db.getRanking();
+        for (const element of rows) {
+            let { rows } = await db.getCoinsBalance(element.id);
+            element.coinsBalance = rows;
+        }
 
-            });
-        });*/
+        res.json(rows);
     } catch (e) {
         console.log(e);
     }

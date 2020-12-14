@@ -104,22 +104,26 @@ export async function receiveGlobalCoinData() {
 }
 
 export async function receiveCoinData(id) {
-    let nowUnixTime = new Date().getTime();
-    let weekTime = nowUnixTime - 604800000;
     let coin = await axios.get(`/api/coin/${id}`);
     let history = await axios.get(`/api/coin/history/${id}`);
-    let weekHistory = await axios.get(
-        `https://api.coingecko.com/api/v3/coins/${id}/market_chart/range?vs_currency=usd&from=${weekTime}&to=${nowUnixTime}`
-    );
-    console.log(nowUnixTime, weekTime);
-    console.log("WEEKHISTORY DATA", weekHistory.data);
-    console.log("24H HISTORY DATA", history.data);
-    console.log("GLOBAL DATA", coin.data);
+
     return {
         type: "RECEIVE_COIN_DATA",
         coin: coin.data,
         history: history.data.prices,
-        weekHistory: weekHistory.data.prices,
+    };
+}
+
+export async function historyData(id) {
+    const unixTime = Math.floor(Date.now() / 1000);
+    let weekTime = unixTime - 604800;
+    let { data } = await axios.get(
+        `https://api.coingecko.com/api/v3/coins/${id}/market_chart/range?vs_currency=usd&from=${weekTime}&to=${unixTime}`
+    );
+    console.log("HISTORY DATA", data);
+    return {
+        type: "HISTORY_DATA",
+        history: data.prices,
     };
 }
 
@@ -146,10 +150,62 @@ export async function receiveCoinsBalance() {
     console.log("CurrenciesPrices", currenciesPrices);
     console.log("COIN BALANCE", data);
     let totals = data.map((el) => el.total);
+    let totalSum = totals.reduce((a, b) => {
+        return a + b;
+    });
+
     return {
         type: "RECEIVE_COIN_BALANCE",
         coinBalance: data,
         currencies,
         totals,
+        totalSum,
+    };
+}
+
+export async function receiveRanking() {
+    const { data } = await axios.get("/api/ranking");
+    let currencies = [
+        "bitcoin",
+        "ethereum",
+        "ripple",
+        "tether",
+        "litecoin",
+        "bitcoin-cash",
+        "chainlink",
+        "cardano",
+        "polkadot",
+        "binancecoin",
+    ];
+    let stringAPI = "";
+    currencies.forEach((element) => {
+        stringAPI += element + "%2C";
+    });
+    let currenciesPrices = await axios.get(
+        `https://api.coingecko.com/api/v3/simple/price?ids=${stringAPI}&vs_currencies=usd`
+    );
+    for (let i = 0; i < data.length; i++) {
+        let coinTotal = 0;
+        data[i].coinsBalance.forEach(function (element) {
+            console.log("COIN NAME", element.currency);
+            element.price = currenciesPrices.data[element.currency].usd;
+            element.total =
+                currenciesPrices.data[element.currency].usd * element.sum;
+            coinTotal += element.total;
+        });
+        data[i].coinTotal = coinTotal;
+        data[i].totalAmount = data[i].balance + coinTotal;
+    }
+    data.sort(function (a, b) {
+        return b.totalAmount - a.totalAmount;
+    });
+
+    let totalAmounts = data.map((user) => user.totalAmount);
+    console.log("Total Amounts", totalAmounts);
+    console.log("RANKING DATA", data);
+
+    return {
+        type: "RECEIVE_RANKING",
+        userRanking: data,
     };
 }

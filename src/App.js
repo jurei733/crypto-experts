@@ -53,11 +53,11 @@ export default class App extends React.Component {
             .get("/user", this.state)
             .then(({ data }) => {
                 this.setState({
-                    profilePic: data[0].image,
-                    firstname: data[0].firstname,
-                    lastname: data[0].lastname,
-                    email: data[0].email,
-                    bio: data[0].bio,
+                    profilePic: data.image,
+                    firstname: data.firstname,
+                    lastname: data.lastname,
+                    email: data.email,
+                    bio: data.bio,
                 });
             })
             .catch(() => {
@@ -93,6 +93,12 @@ export default class App extends React.Component {
                     {this.state.error && <p>DIDNT WORK, TOO BAD, BYE.</p>}
                     <div id="appHeader">
                         <Logo />
+                        <Link to="/news">
+                            <img
+                                className="headerIcon"
+                                src="/news-icon.png"
+                            ></img>
+                        </Link>
                         <Link to="/coins">
                             <img
                                 className="headerIcon"

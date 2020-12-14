@@ -1,9 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { receiveCoinData, buyCoin, sellCoin } from "./actions.js";
+import { receiveCoinData, buyCoin, sellCoin, historyData } from "./actions.js";
 import Chart from "chart.js";
 import axios from "./axios";
 import { Link } from "react-router-dom";
+
+let chart = null;
 
 export default function Coins(props) {
     const canvas = useRef();
@@ -18,14 +20,15 @@ export default function Coins(props) {
 
     const coin = useSelector((store) => store.coin);
 
-    const coinDates = useSelector((store) =>
-        store.history.map(
+    const coinDates = useSelector(
+        (store) => store.history
+    ); /*.map(
             (arr) =>
                 new Date(arr[0]).getHours() +
                 ":" +
                 new Date(arr[0]).getMinutes()
-        )
-    );
+        
+    );*/
 
     let date = new Date(coinDates[1]);
 
@@ -35,6 +38,7 @@ export default function Coins(props) {
         store.history.map((arr) => arr[1])
     );
     useEffect(() => {
+        if (chart) chart.destroy();
         var ctx = canvas.current;
         //line chart data
         var data = {
@@ -55,6 +59,13 @@ export default function Coins(props) {
         //options
         var options = {
             responsive: true,
+            /*scales: {
+                xAxes: [
+                    {
+                        type: "time",
+                    },
+                ],
+            },*/
             title: {
                 display: true,
                 position: "top",
@@ -73,7 +84,7 @@ export default function Coins(props) {
         };
 
         //create Chart class object
-        new Chart(ctx, {
+        chart = new Chart(ctx, {
             type: "line",
             data: data,
             options: options,
@@ -107,8 +118,26 @@ export default function Coins(props) {
                 Sell
             </button>
             <input ref={sellAmount} name="sell" type="number"></input>
+            <div style={{ width: 800, height: 800 }}>
+                <canvas ref={canvas} id="myChart"></canvas>
+            </div>
+            <button
+                onClick={() =>
+                    dispatch(receiveCoinData(props.match.params.name))
+                }
+            >
+                1h
+            </button>
+            <button>12h</button>
+            <button>1d</button>
+            <button>3d</button>
+            <button onClick={() => dispatch(historyData(coin.id))}>1W</button>
+            <button>1M</button>
+            <button>3M</button>
+            <button>6M</button>
+            <button>1Y</button>
+            <button>MAX</button>
 
-            <canvas ref={canvas} id="myChart"></canvas>
             {modal && (
                 <div>
                     <p> This is what you want to buy/sell? </p>

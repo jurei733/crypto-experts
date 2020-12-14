@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { receiveUserData, receiveCoinsBalance } from "./actions.js";
 import Chart from "chart.js";
 
+let chart = null;
+
 export default function UserStats() {
     const canvas = useRef();
     const dispatch = useDispatch();
@@ -16,16 +18,20 @@ export default function UserStats() {
     const coinBalance = useSelector((store) => store.coinBalance);
     const currencies = useSelector((store) => store.currencies);
     const totals = useSelector((store) => store.totals);
+    const totalSum = useSelector((store) => store.totalSum);
 
     useEffect(() => {
+        if (chart) chart.destroy();
+        console.log("USER BALANCE", user.balance);
         var ctx = canvas.current;
+        console.log("CURRENCIES&TOTALS", currencies, totals);
         //line chart data
         var data = {
-            labels: currencies,
+            labels: [...currencies, "FIAT"],
             datasets: [
                 {
                     label: "Chart",
-                    data: totals,
+                    data: [...totals, user.balance],
                     backgroundColor: [
                         "Red",
                         "Yellow",
@@ -64,7 +70,7 @@ export default function UserStats() {
         };
 
         //create Chart class object
-        new Chart(ctx, {
+        chart = new Chart(ctx, {
             type: "pie",
             data: data,
             options: options,
@@ -73,8 +79,9 @@ export default function UserStats() {
 
     return (
         <div className="userStats">
-            <canvas ref={canvas} id="myChart"></canvas>
-
+            <div style={{ width: 300, height: 300 }}>
+                <canvas ref={canvas} id="myChart"></canvas>
+            </div>
             {coinBalance &&
                 coinBalance.map((coin) => (
                     <p key={coin.currency}>
@@ -84,12 +91,15 @@ export default function UserStats() {
                         <strong>WORTH:{coin.total}</strong>
                     </p>
                 ))}
-            {user &&
-                user.map((user) => (
-                    <p key={user.id}>
-                        <strong>FIAT:{user.balance} </strong>
-                    </p>
-                ))}
+            <p>
+                <strong>TOTAL SUM CRYPTO:{totalSum} </strong>
+            </p>
+            <p>
+                <strong>FIAT:{user && user.balance} </strong>
+            </p>
+            <p>
+                <strong>TOTAL BALANCE{totalSum + user.balance} </strong>
+            </p>
         </div>
     );
 }

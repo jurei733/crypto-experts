@@ -239,6 +239,9 @@ textarea {
     font-size: 40px;
 }
 
+.globalMarketCapPercentage {
+    font-size: 16px;
+}
 .green {
     color: green;
 }
@@ -342,4 +345,24 @@ textarea {
 #coinTitle {
     display: flex;
     flex-direction: row;
+}
+
+.rankingUser {
+    font-size: 30px;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    flex-direction: row;
+    margin: 50px;
+    text-decoration: none;
+    color: #1f40b5;
+}
+a {
+    text-decoration: none;
+}
+
+.rankingUser img {
+    height: 100px;
+    width: 100px;
+    margin-right: 50px;
 }
