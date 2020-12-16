@@ -41,7 +41,17 @@ export default function Coins() {
                     (24h)
                 </p>
             </div>
-
+            <div className="coins-header">
+                <p className="coinRank">Rank</p>
+                <div style={{ width: 200 }}></div>
+                <div className="coinNaming">
+                    <p>Coin-Name(Symbol)</p>
+                </div>
+                <p className="coinPrice">Price</p>
+                <p className="coinMarketCap">Market-Capitalization</p>
+                <p className={"coinPriceChange"}>Price Change(24h)</p>
+                <p className={"coinPriceChange"}>Market Cap Change(24h)</p>
+            </div>
             {coins.map((coin) => (
                 <Link to={`/coin/${coin.id}`} className="coin" key={coin.id}>
                     <p className="coinRank">{coin.market_cap_rank}</p>
@@ -61,6 +71,7 @@ export default function Coins() {
                             style: "currency",
                             currency: "USD",
                             maximumSignificantDigits: 6,
+                            minimumIntegerDigits: 3,
                         }).format(coin.market_cap)}
                     </p>
                     <p

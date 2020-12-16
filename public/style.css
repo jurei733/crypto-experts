@@ -1,8 +1,34 @@
 body {
-    background-color: gold;
+    background-color: #daa520;
     font-family: "Ubuntu";
-    color: #1f40b5;
+    color: black;
     margin: 0;
+    font-style: "Futura";
+}
+
+.loader {
+    border: 16px solid #f3f3f3;
+    border-top: 16px solid black;
+    border-radius: 50%;
+    width: 130px;
+    height: 130px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+a:active {
+    color: black;
+}
+a:visited {
+    color: black;
 }
 #registration {
     display: flex;
@@ -31,12 +57,13 @@ form {
 }
 
 #smallLogo {
-    width: 140px;
+    margin-top: 20px;
+    margin-left: 20px;
 }
 
 #bigLogo {
-    width: 300px;
-    height: 300px;
+    margin-top: 200px;
+    width: 400px;
 }
 
 input[type="text"],
@@ -44,12 +71,12 @@ input[type="email"],
 input[type="password"] {
     outline: none;
     border: 0;
-    background-color: gold;
-    border-bottom: 2px solid #1f40b5;
+    background-color: goldenrod;
+    border-bottom: 2px solid black;
     width: 400px;
     display: block;
     font-size: 20px;
-    color: #1f40b5;
+    color: black;
     margin-bottom: 30px;
     text-align: center;
 }
@@ -60,25 +87,33 @@ input[type="password"] {
     cursor: pointer;
     margin-top: 20px;
     margin-bottom: 20px;
-    background-color: #1f40b5;
+    background-color: black;
     color: #f2f4fb;
-    padding: 20px 20px;
-    font-size: 25px;
+    padding: 10px 10px;
+    font-size: 20px;
     border-radius: 5px;
 }
 
 .btn:hover {
-    background-color: rgb(25, 77, 155);
-    color: rgb(255, 197, 89);
+    background-color: rgb(77, 84, 95);
 }
 
 .btn:active {
-    border: solid rgb(15, 76, 129) 2px;
+    border: solid rgb(77, 84, 95) 2px;
+}
+
+.coinBtn {
+    border: none;
+    cursor: pointer;
+    background-color: black;
+    color: #f2f4fb;
+    font-size: 15px;
+    border-radius: 5px;
 }
 
 ::placeholder {
     /* Chrome, Firefox, Opera, Safari 10.1+ */
-    color: #1f40b5;
+    color: black;
     opacity: 1; /* Firefox */
     text-align: center;
 }
@@ -88,16 +123,21 @@ input:focus::placeholder {
 }
 
 .smallProfilePicture {
-    width: 120px;
-    height: 120px;
+    width: 70px;
+    height: 70px;
+    margin-top: 10px;
+    margin-right: 20px;
+}
+.smallProfilePicture:hover {
+    cursor: pointer;
+    transform: scale(1.1);
 }
 
 #appHeader {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    border-bottom: 1px solid #1f40b5;
-    margin-bottom: 15px;
+    background-color: goldenrod;
 }
 
 #dark {
@@ -111,14 +151,14 @@ input:focus::placeholder {
 
 .modal {
     background-color: goldenrod;
-    border: 2px solid #1f40b5;
+    border: 2px solid black;
     position: fixed;
     width: 50vw;
     top: 200px;
     left: 50%;
     transform: translateX(-50%);
     text-align: center;
-    color: #1f40b5;
+    color: black;
     border-radius: 30px;
     min-height: 50vh;
 }
@@ -126,7 +166,9 @@ input:focus::placeholder {
 .bigProfilePicture {
     width: 250px;
     height: 250px;
-    margin-right: 50px;
+    margin: 50px;
+    border: black 2px solid;
+    border-radius: 50%;
 }
 
 .profile {
@@ -143,13 +185,18 @@ textarea {
     width: 500px;
     height: 200px;
     font-size: 25px;
-    border: 1px solid #1f40b5;
+    border: 1px solid border;
 }
 
 #appHeader .headerIcon {
-    margin: 20px;
-    width: 120px;
-    height: 120px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 80px;
+    height: 80px;
+}
+
+#appHeader .headerIcon:hover {
+    transform: scale(1.1);
 }
 
 .userOverview {
@@ -158,8 +205,8 @@ textarea {
     justify-content: space-evenly;
     margin-bottom: 50px;
     overflow-x: auto;
-    background-color: rgba(31, 64, 181, 0.9);
     margin-top: 50px;
+    border: black solid 5px;
 }
 
 .userOverview img {
@@ -181,32 +228,45 @@ textarea {
     margin-left: 50px;
     margin-right: 50px;
     text-decoration: none;
-    border: 1px rgba(31, 64, 181) solid;
-    color: rgba(31, 64, 181);
+    border: 1px black solid;
+}
+
+.coins-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin-left: 50px;
+    margin-right: 50px;
+    text-decoration: none;
+    padding-left: 100px;
+    border: 1px black solid;
+    font-size: 25px;
 }
 
 .coin:hover {
-    background-color: rgba(31, 64, 181, 0.5);
+    background-color: rgba(77, 84, 95, 0.5);
 }
 
 .coinRank {
     font-size: 40px;
+    min-width: 30px;
 }
 .coin img {
     padding-top: 10px;
 
     height: 100px;
+    width: 100px;
 }
 
 .coinNaming {
-    min-width: 200px;
+    min-width: 130px;
     display: block;
     font-size: 25px;
     margin-right: 50px;
 }
 
 .coinPrice {
-    min-width: 200px;
+    min-width: 250px;
     font-size: 40px;
     margin-right: 50px;
 }
@@ -229,14 +289,38 @@ textarea {
     margin-right: 50px;
 }
 
+#coinDescription {
+    font-size: 20px;
+    font-style: "Futura";
+    border: black solid 1px;
+    width: 90vw;
+    padding: 10px;
+    margin: 20px;
+}
+
+#coinDescription a {
+    font-size: 20px;
+    color: black;
+    font-weight: bold;
+}
+
 #marketOverview {
     height: 100px;
     display: flex;
     flex-direction: row;
     align-items: center;
     margin: 50px;
-    border: 1px rgba(31, 64, 181) solid;
+    border: 1px black solid;
     font-size: 40px;
+}
+
+#totalStat {
+    font-size: 25px;
+    padding: 10px;
+    border: 2px black solid;
+}
+#totalStat strong {
+    margin: 20px;
 }
 
 .globalMarketCapPercentage {
@@ -261,28 +345,40 @@ textarea {
     content: "% ▼";
 }
 
+.bio textarea {
+    background-color: black;
+    color: white;
+    border: 1px black solid;
+}
+
 .chat-message {
     display: flex;
     flex-direction: row;
-    background-color: #1f40b5;
-    color: gold;
+    color: white;
     padding: 20px;
+    background-color: #646463;
 }
 
 .chat {
+    width: 60%;
     margin: 50px;
-    border: 5px solid #1f40b5;
+    border: 5px solid black;
+    margin-left: 50%;
+    transform: translateX(-50%);
 }
 
 .chat-container {
     max-height: 500px;
     overflow-y: auto;
+    color: white;
 }
 
 .chatImage {
+    height: 100%;
     width: 80px;
     height: 80px;
     margin-right: 50px;
+    border-radius: 50%;
 }
 
 .chatInfo {
@@ -290,11 +386,10 @@ textarea {
 }
 
 #chatInput {
-    border-top: 5px gold solid;
     height: 200px;
     width: 100%;
-    color: gold;
-    background-color: #1f40b5;
+    background-color: black;
+    color: white;
 }
 
 .chatInfo b {
@@ -308,8 +403,8 @@ textarea {
 .chat button {
     margin-top: 10px;
     float: right;
-    color: gold;
-    background-color: #1f40b5;
+    color: white;
+    background-color: black;
     font-size: 25px;
     padding: 5px;
 }
@@ -327,15 +422,13 @@ textarea {
 }
 
 .chat-container::-webkit-scrollbar-thumb {
-    background-color: blue; /* color of the scroll thumb */
+    background-color: black; /* color of the scroll thumb */
     border-radius: 20px; /* roundness of the scroll thumb */
-    border: 4px solid gold; /* creates padding around scroll thumb */
+    border: 4px solid white; /* creates padding around scroll thumb */
 }
 
-#logout {
-    margin: 10px;
-    font-size: 30px;
-    display: block;
+#logout:hover {
+    cursor: pointer;
 }
 
 #logout:hover {
@@ -347,22 +440,129 @@ textarea {
     flex-direction: row;
 }
 
+.ranking {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 50%;
+    transform: translateX(-50%);
+}
+
 .rankingUser {
     font-size: 30px;
     display: flex;
-    justify-content: left;
     align-items: center;
     flex-direction: row;
-    margin: 50px;
+    margin: 10px;
     text-decoration: none;
-    color: #1f40b5;
+    border-bottom: 1px solid black;
+    padding-bottom: 10px;
 }
+.rankingUser:hover {
+    background-color: rgba(77, 84, 95, 0.5);
+}
+
 a {
     text-decoration: none;
+    color: black;
 }
 
 .rankingUser img {
     height: 100px;
     width: 100px;
+    margin-right: 80px;
+    border-radius: 50%;
+}
+
+.rankingUser strong {
+    min-width: 300px;
+}
+
+.RankingUserAmount {
+    min-width: 200px;
+}
+
+.userStats {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 90vw;
+}
+
+#profilePic {
+    border-radius: 50%;
+}
+
+#main {
+    color: black;
+}
+
+#historyChanges {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+.btnhistoryChanges {
+    background-color: black;
+    color: white;
+    margin: 20px;
+    padding: 10px;
+    border-radius: 50%;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-rows: auto auto auto auto;
+    color: black;
+    padding: 10px;
+}
+
+.news-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.news {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border: 3px black solid;
+    margin: 10px;
+    height: 200px;
+    width: 70%;
+    padding-right: 10px;
+    border-radius: 25px;
+    font-size: 18px;
+}
+
+.news strong {
+    font-size: 25px;
+}
+
+.news img {
     margin-right: 50px;
+    width: 300px;
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+}
+
+.news div {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.news:hover {
+    background-color: rgba(77, 84, 95, 0.5);
+}
+
+#otherProfile {
+    display: flex;
+    flex-direction: row;
+    margin-left: 50px;
+    width: 65%;
+}
+
+#otherProfile div {
+    padding-top: 50px;
 }

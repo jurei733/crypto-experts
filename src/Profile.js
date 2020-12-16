@@ -28,15 +28,17 @@ export default class Profile extends React.Component {
                         className="bigProfilePicture"
                         profilePic={this.props.profilePic}
                     />
-                    <strong>
-                        {this.props.firstname} {this.props.lastname}
-                    </strong>
-                    <BioEditor
-                        updateBio={this.updateBio}
-                        firstname={this.props.firstname}
-                        lastname={this.props.lastname}
-                        bio={this.props.bio}
-                    />
+                    <div style={{ display: "block", marginTop: 20 }}>
+                        <h1>
+                            {this.props.firstname} {this.props.lastname}
+                        </h1>
+                        <BioEditor
+                            updateBio={this.updateBio}
+                            firstname={this.props.firstname}
+                            lastname={this.props.lastname}
+                            bio={this.props.bio}
+                        />
+                    </div>
                 </div>
                 <UserStats />
             </React.Fragment>

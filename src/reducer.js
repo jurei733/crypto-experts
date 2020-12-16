@@ -10,6 +10,8 @@ export default function (
         currencies: [],
         totals: [],
         totalSum: null,
+        news: [],
+        coinImages: [],
     },
     action
 ) {
@@ -91,6 +93,16 @@ export default function (
         state = {
             ...state,
             history: action.history,
+        };
+    } else if (action.type == "SELL_COIN") {
+        state = {
+            ...state,
+            error: action.error,
+        };
+    } else if (action.type == "RECEIVE_NEWS") {
+        state = {
+            ...state,
+            news: action.news,
         };
     }
 

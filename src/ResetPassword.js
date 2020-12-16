@@ -68,9 +68,9 @@ export default class ResetPassword extends React.Component {
         if (this.state.step === 0) {
             return (
                 <React.Fragment>
-                    {this.state.error && <p>DIDNT WORK, TOO BAD, BYE.</p>}
-                    <h2>Give us your E-Mail to refresh your memory</h2>
-                    <form onSubmit={this.sendCode}>
+                    {this.state.error && <p>Did not work. Please try again</p>}
+
+                    <form style={{ marginTop: 50 }} onSubmit={this.sendCode}>
                         <input
                             type="email"
                             name="email"
@@ -82,6 +82,12 @@ export default class ResetPassword extends React.Component {
                             Reset Password
                         </button>
                     </form>
+                    <Link to="/login" style={{ marginBottom: "10px" }}>
+                        <u>Login</u>
+                    </Link>
+                    <Link to="/l">
+                        <u>Registration</u>
+                    </Link>
                 </React.Fragment>
             );
         } else if (this.state.step === 1) {

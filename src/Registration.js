@@ -47,8 +47,11 @@ export default class Registration extends React.Component {
     render() {
         return (
             <div id="registration">
-                {this.state.error && <p>DIDNT WORK, TOO BAD, BYE.</p>}
-                <form onSubmit={this.handleSubmit}>
+                <h2>Registration</h2>
+                {this.state.error && (
+                    <p className="red">Did not work. Please try again</p>
+                )}
+                <form onSubmit={this.handleSubmit} autoComplete="off">
                     <input
                         type="text"
                         name="firstname"
@@ -81,7 +84,10 @@ export default class Registration extends React.Component {
                         Create Account
                     </button>
                     <p>
-                        Already a member? <Link to="/login">Login</Link>
+                        Already a member?{" "}
+                        <Link to="/login">
+                            <u>Login</u>
+                        </Link>
                     </p>
                 </form>
             </div>

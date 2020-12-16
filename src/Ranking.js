@@ -18,13 +18,20 @@ export default function Ranking() {
                     <Link key={user.id} to={`/user/${user.id}`}>
                         <div className="rankingUser">
                             <img src={user.image}></img>
-                            {user.firstname}&nbsp;&nbsp;
-                            {user.lastname}&nbsp;&nbsp;
-                            {new Intl.NumberFormat("de-DE", {
-                                style: "currency",
-                                currency: "USD",
-                            }).format(user.totalAmount)}
+                            <strong>
+                                {user.firstname}&nbsp;&nbsp;
+                                {user.lastname}&nbsp;&nbsp;
+                            </strong>
+                            <span className="RankingUserAmount">
+                                {new Intl.NumberFormat("de-DE", {
+                                    style: "currency",
+                                    currency: "USD",
+                                }).format(user.totalAmount)}
+                            </span>
                             &nbsp;&nbsp;
+                            {new Intl.NumberFormat("de-DE", {
+                                style: "percent",
+                            }).format(user.performance)}
                         </div>
                     </Link>
                 ))}

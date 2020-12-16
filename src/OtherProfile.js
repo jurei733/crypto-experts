@@ -43,18 +43,22 @@ export default class OtherProfile extends React.Component {
 
     render() {
         return (
-            <div>
+            <div id="otherProfile">
                 {this.state.error && <p>DIDNT WORK, TOO BAD, BYE.</p>}
                 <img
                     className="bigProfilePicture"
                     src={this.state.profilePic}
                 ></img>
-                <h1>
-                    {this.state.firstname} {this.state.lastname}
-                </h1>
+                <div>
+                    <h1>
+                        {this.state.firstname} {this.state.lastname}
+                    </h1>
 
-                <p>{this.state.bio}</p>
-                <FriendButton id={this.props.match.params.id}></FriendButton>
+                    <h2>{this.state.bio}</h2>
+                    <FriendButton
+                        id={this.props.match.params.id}
+                    ></FriendButton>
+                </div>
             </div>
         );
     }

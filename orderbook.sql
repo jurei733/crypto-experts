@@ -1,6 +1,6 @@
 CREATE TABLE orderbook (
     id SERIAL PRIMARY KEY,
-    amount INTEGER NOT NULL,
+    amount FLOAT NOT NULL,
     currency VARCHAR NOT NULL,
     price FLOAT NOT NULL,
     users_id INTEGER NOT NULL REFERENCES users(id),

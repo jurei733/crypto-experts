@@ -15,6 +15,8 @@ const sendEmail = require("./ses");
 const uploader = require("./middlewares/uploader.js");
 const s3 = require("./middlewares/s3.js");
 const CoinGecko = require("coingecko-api");
+const CryptoNewsAPI = require("crypto-news-api").default;
+const Api = new CryptoNewsAPI("772fc7ab3372aa82a6c504be6e509417");
 
 const CoinGeckoClient = new CoinGecko();
 let connectedList = [];
@@ -282,7 +284,7 @@ app.get("/friends-wannabes", async (req, res) => {
 
 app.get("/api/coins", async (req, res) => {
     let { data } = await CoinGeckoClient.coins.markets({
-        per_page: 10,
+        per_page: 20,
         page: 1,
     });
     res.json(data);
@@ -319,10 +321,14 @@ app.post("/api/coin/buy/:name", async (req, res) => {
     console.log("BALANCE BEFORE BUY ORDER", balance.rows[0].balance);
     if (totalBuyOrder > balance) return res.sendStatus(400);
     try {
-        await db.buyCoin(req.session.userId, req.body.amount, req.params.name);
+        await db.buyCoin(
+            req.session.userId,
+            req.body.amount,
+            req.params.name,
+            req.body.price
+        );
     } catch (e) {
-        console.log("END UP IN CATCH");
-        res.sendStatus(400);
+        return res.sendStatus(400).json({ error: "just no" });
     }
 
     let newBalance = balance.rows[0].balance - totalBuyOrder;
@@ -341,17 +347,31 @@ app.post("/api/coin/sell/:name", async (req, res) => {
         req.body.amount
     );
 
-    let totalSellOrder = Math.round(req.body.amount * req.body.price);
+    const totalSellOrder = Math.round(req.body.amount * req.body.price);
+    const checkOrder = await db.checkBuyOrder(
+        req.session.userId,
+        req.params.name
+    );
+    console.log("checkOrder.rows[0].sum", checkOrder.rows[0].sum);
+    console.log("checkOrder.rows.length", checkOrder.rows.length);
 
+    if (
+        checkOrder.rows[0].sum < req.body.amount ||
+        checkOrder.rows.length == 0
+    ) {
+        console.log("IAM IN");
+        return res.sendStatus(400);
+    }
     try {
         await db.sellCoin(
             req.session.userId,
             -req.body.amount,
-            req.params.name
+            req.params.name,
+            req.body.price
         );
     } catch (e) {
         console.log("END UP IN CATCH");
-        res.sendStatus(400);
+        return res.sendStatus(400);
     }
     let balance = await db.getBalance(req.session.userId);
     console.log(balance.rows[0].balance);
@@ -394,7 +414,23 @@ app.get("/api/ranking", async (req, res) => {
     try {
         let { rows } = await db.getRanking();
         for (const element of rows) {
-            let { rows } = await db.getCoinsBalance(element.id);
+            console.log(element.id);
+            const { rows } = await db.getCoinsBalance(element.id);
+            const buy = await db.getBuyPerformance(element.id);
+            console.log(
+                "BUY PERFORMANCE DATA",
+                buy.rows[0].sum,
+                buy.rows[0].count
+            );
+            let buyPerform = buy.rows[0].sum / buy.rows[0].count;
+            const sell = await db.getSellPerformance(element.id);
+            console.log(
+                "SELL PERFORMANCE DATA",
+                sell.rows[0].sum,
+                sell.rows[0].count
+            );
+            let sellPerform = Math.abs(sell.rows[0].sum) / sell.rows[0].count;
+            element.performance = 1 - sellPerform / buyPerform;
             element.coinsBalance = rows;
         }
 
@@ -408,6 +444,16 @@ app.get("/activeUsers", async (req, res) => {
     console.log("ACTIVE USERS", connectedList);
 
     res.json(connectedList.length);
+});
+
+app.get("/api/news", async (req, res) => {
+    Api.getTopNews()
+        .then(function (articles) {
+            return res.json(articles);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
 });
 
 app.get("/logout", (req, res) => {

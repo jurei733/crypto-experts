@@ -20,8 +20,8 @@ export default function Coins(props) {
 
     const coin = useSelector((store) => store.coin);
 
-    const coinDates = useSelector(
-        (store) => store.history
+    const coinDates = useSelector((store) =>
+        store.history.map((arr) => new Date(arr[0]))
     ); /*.map(
             (arr) =>
                 new Date(arr[0]).getHours() +
@@ -29,10 +29,6 @@ export default function Coins(props) {
                 new Date(arr[0]).getMinutes()
         
     );*/
-
-    let date = new Date(coinDates[1]);
-
-    console.log("DATE", date.getHours(), date.getMinutes());
 
     const coinPrices = useSelector((store) =>
         store.history.map((arr) => arr[1])
@@ -51,30 +47,67 @@ export default function Coins(props) {
                     borderColor: "black",
                     fill: false,
                     lineTension: 0,
-                    radius: 5,
+                    radius: 1,
                 },
             ],
         };
 
         //options
         var options = {
+            tooltips: {
+                // Disable the on-canvas tooltip
+                enabled: false,
+            },
             responsive: true,
-            /*scales: {
+            scales: {
                 xAxes: [
                     {
+                        ticks: {
+                            fontColor: "black",
+                            fontSize: 20,
+                        },
+                        scaleLabel: {
+                            display: true,
+                            fontColor: "black",
+                            fontSize: 20,
+                        },
+                        gridLines: {
+                            display: false,
+                        },
                         type: "time",
+                        distribution: "linear",
+                        time: {
+                            minUnit: "minute",
+                            round: "minute",
+                        },
                     },
                 ],
-            },*/
+                yAxes: [
+                    {
+                        scaleLabel: {
+                            fontColor: "black",
+                        },
+                        ticks: {
+                            fontColor: "black",
+                            fontSize: 20,
+
+                            // Include a dollar sign in the ticks
+                            callback: function (value) {
+                                return value + "$";
+                            },
+                        },
+                    },
+                ],
+            },
             title: {
-                display: true,
+                display: false,
                 position: "top",
                 text: "",
                 fontSize: 18,
                 fontColor: "#111",
             },
             legend: {
-                display: true,
+                display: false,
                 position: "bottom",
                 labels: {
                     fontColor: "#333",
@@ -97,55 +130,128 @@ export default function Coins(props) {
 
     return (
         <React.Fragment>
+            <img src={coin && coin.image.small} />
             <div id="coinTitle">
-                <img src={coin && coin.image.small} />
-                <h1>{coin && coin.name}</h1>
-                <h2>{coin && coin.symbol.toUpperCase()}</h2>
+                {coin && coin.name}
+                {coin &&
+                    new Intl.NumberFormat("de-DE", {
+                        style: "currency",
+                        currency: "USD",
+                    }).format(coin.market_data.current_price.usd)}
+                <input ref={buyAmount} name="buy" type="number"></input>
+                <button
+                    className="coinBtn"
+                    onClick={() =>
+                        dispatch(buyCoin(coin.id, buyAmount.current.value))
+                    }
+                >
+                    Buy
+                </button>
+                <input ref={sellAmount} name="sell" type="number"></input>
+                <button
+                    className="coinBtn"
+                    onClick={() =>
+                        dispatch(sellCoin(coin.id, sellAmount.current.value))
+                    }
+                >
+                    Sell
+                </button>
+                <button
+                    className="coinBtn"
+                    style={{ display: "inline" }}
+                    onClick={() => setModal(!modal)}
+                >
+                    Description
+                </button>
             </div>
-            <button
-                onClick={() =>
-                    dispatch(buyCoin(coin.id, buyAmount.current.value))
-                }
-            >
-                Buy
-            </button>
-            <input ref={buyAmount} name="buy" type="number"></input>
-            <button
-                onClick={() =>
-                    dispatch(sellCoin(coin.id, sellAmount.current.value))
-                }
-            >
-                Sell
-            </button>
-            <input ref={sellAmount} name="sell" type="number"></input>
-            <div style={{ width: 800, height: 800 }}>
-                <canvas ref={canvas} id="myChart"></canvas>
-            </div>
-            <button
-                onClick={() =>
-                    dispatch(receiveCoinData(props.match.params.name))
-                }
-            >
-                1h
-            </button>
-            <button>12h</button>
-            <button>1d</button>
-            <button>3d</button>
-            <button onClick={() => dispatch(historyData(coin.id))}>1W</button>
-            <button>1M</button>
-            <button>3M</button>
-            <button>6M</button>
-            <button>1Y</button>
-            <button>MAX</button>
 
             {modal && (
                 <div>
-                    <p> This is what you want to buy/sell? </p>
-
-                    <button onClick={() => setModal(false)}>NO </button>
-                    <button onClick={() => addOrderbook()}>YES</button>
+                    <p
+                        id="coinDescription"
+                        dangerouslySetInnerHTML={{
+                            __html: coin.description.de,
+                        }}
+                    ></p>
                 </div>
             )}
+            <div style={{ width: "90vw" }}>
+                <canvas ref={canvas} id="myChart"></canvas>
+            </div>
+            <div id="historyChanges">
+                <button
+                    className="btnhistoryChanges"
+                    onClick={() => dispatch(historyData(coin.id, "one_hour"))}
+                >
+                    1h
+                </button>
+                <button
+                    className="btnhistoryChanges"
+                    onClick={() =>
+                        dispatch(historyData(coin.id, "twelve_hours"))
+                    }
+                >
+                    12h
+                </button>
+                <button
+                    className="btnhistoryChanges"
+                    onClick={() => dispatch(historyData(coin.id, "one_day"))}
+                >
+                    1d
+                </button>
+                <button
+                    className="btnhistoryChanges"
+                    onClick={() => dispatch(historyData(coin.id, "three_days"))}
+                >
+                    3d
+                </button>
+                <button
+                    className="btnhistoryChanges"
+                    onClick={() => dispatch(historyData(coin.id, "one_week"))}
+                >
+                    1W
+                </button>
+                <button
+                    className="btnhistoryChanges"
+                    onClick={() => dispatch(historyData(coin.id, "one_month"))}
+                >
+                    1M
+                </button>
+                <button
+                    className="btnhistoryChanges"
+                    onClick={() =>
+                        dispatch(historyData(coin.id, "three_months"))
+                    }
+                >
+                    3M
+                </button>
+                <button
+                    className="btnhistoryChanges"
+                    onClick={() => dispatch(historyData(coin.id, "six_months"))}
+                >
+                    6M
+                </button>
+                <button
+                    className="btnhistoryChanges"
+                    onClick={() => dispatch(historyData(coin.id, "one_year"))}
+                >
+                    1Y
+                </button>
+                <button
+                    className="btnhistoryChanges"
+                    onClick={() =>
+                        dispatch(historyData(coin.id, "three_years"))
+                    }
+                >
+                    3Y
+                </button>
+                <button
+                    className="btnhistoryChanges"
+                    onClick={() => dispatch(historyData(coin.id, "max"))}
+                >
+                    MAX
+                </button>
+            </div>
         </React.Fragment>
     );
 }

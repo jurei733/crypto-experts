@@ -93,6 +93,16 @@ export default class App extends React.Component {
                     {this.state.error && <p>DIDNT WORK, TOO BAD, BYE.</p>}
                     <div id="appHeader">
                         <Logo />
+                        <Link to="/">
+                            <img
+                                style={{
+                                    width: 75,
+                                    height: 75,
+                                }}
+                                className="headerIcon"
+                                src="/profile-icon.png"
+                            ></img>
+                        </Link>
                         <Link to="/news">
                             <img
                                 className="headerIcon"
@@ -107,28 +117,63 @@ export default class App extends React.Component {
                         </Link>
                         <Link to="/ranking">
                             <img
+                                style={{
+                                    width: 75,
+                                    height: 75,
+                                }}
                                 className="headerIcon"
                                 src="/ranking-icon.png"
                             ></img>
                         </Link>
                         <Link to="/users">
                             <img
+                                style={{
+                                    borderRadius: "50%",
+                                    width: 70,
+                                    height: 70,
+                                }}
                                 className="headerIcon"
                                 src="/search-icon.png"
                             ></img>
                         </Link>
                         <Link to="/friends">
                             <img
+                                style={{
+                                    borderRadius: "50%",
+                                    width: 70,
+                                    height: 70,
+                                }}
                                 className="headerIcon"
                                 src="/friends-icon.png"
                             ></img>
                         </Link>
                         <Link to="/chat">
                             <img
+                                style={{
+                                    width: 75,
+                                    height: 75,
+                                }}
                                 className="headerIcon"
                                 src="/chat-icon.png"
                             ></img>
                         </Link>
+
+                        <img
+                            id="logout"
+                            onClick={() => {
+                                socket.close();
+                                axios.get("/logout").then(() => {
+                                    location.replace("/");
+                                });
+                            }}
+                            style={{
+                                borderRadius: "50%",
+                                width: 70,
+                                height: 70,
+                            }}
+                            className="headerIcon"
+                            src="/logout-icon.png"
+                        ></img>
 
                         <div>
                             <ProfilePic
@@ -138,17 +183,6 @@ export default class App extends React.Component {
                                 lastname={this.state.lastname}
                                 toggleUploader={this.toggleUploader}
                             />
-                            <span
-                                id="logout"
-                                onClick={() => {
-                                    socket.close();
-                                    axios.get("/logout").then(() => {
-                                        location.replace("/");
-                                    });
-                                }}
-                            >
-                                Logout
-                            </span>
                         </div>
                     </div>
                     {this.state.uploaderVisible && (
@@ -158,40 +192,44 @@ export default class App extends React.Component {
                         />
                     )}
                     <React.Fragment>
-                        Active Users:{this.state.activeUsers}
-                        <Route
-                            exact
-                            path="/"
-                            render={() => (
-                                <div id="appProfile">
-                                    <Profile
-                                        bio={this.state.bio}
-                                        updateBio={this.updateBio}
-                                        toggleUploader={this.toggleUploader}
-                                        profilePic={this.state.profilePic}
-                                        firstname={this.state.firstname}
-                                        lastname={this.state.lastname}
+                        <div id="main">
+                            <Route
+                                exact
+                                path="/"
+                                render={() => (
+                                    <div id="appProfile">
+                                        <Profile
+                                            bio={this.state.bio}
+                                            updateBio={this.updateBio}
+                                            toggleUploader={this.toggleUploader}
+                                            profilePic={this.state.profilePic}
+                                            firstname={this.state.firstname}
+                                            lastname={this.state.lastname}
+                                        />
+                                    </div>
+                                )}
+                            />
+                            <Route
+                                path="/user/:id"
+                                render={(props) => (
+                                    <OtherProfile
+                                        key={props.match.url}
+                                        match={props.match}
+                                        history={props.history}
                                     />
-                                </div>
-                            )}
-                        />
-                        <Route
-                            path="/user/:id"
-                            render={(props) => (
-                                <OtherProfile
-                                    key={props.match.url}
-                                    match={props.match}
-                                    history={props.history}
-                                />
-                            )}
-                        />
-                        <Route path="/coins" render={() => <Coins />} />
-                        <Route path="/users" render={() => <FindPeople />} />
-                        <Route path="/friends" render={() => <Friends />} />
-                        <Route path="/coin/:name" component={Coin} />
-                        <Route path="/chat" component={Chat} />
-                        <Route path="/ranking" component={Ranking} />
-                        <Route path="/news" component={News} />
+                                )}
+                            />
+                            <Route path="/coins" render={() => <Coins />} />
+                            <Route
+                                path="/users"
+                                render={() => <FindPeople />}
+                            />
+                            <Route path="/friends" render={() => <Friends />} />
+                            <Route path="/coin/:name" component={Coin} />
+                            <Route path="/chat" component={Chat} />
+                            <Route path="/ranking" component={Ranking} />
+                            <Route path="/news" component={News} />
+                        </div>
                     </React.Fragment>
                 </BrowserRouter>
             </React.Fragment>

@@ -27,6 +27,7 @@
         "coingecko-api": "^1.0.10",
         "compression": "^1.7.0",
         "cookie-session": "^2.0.0-alpha.2",
+        "crypto-news-api": "^2.2.2",
         "crypto-random-string": "^3.0.1",
         "csurf": "^1.9.0",
         "eslint": "^4.19.1",

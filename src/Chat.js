@@ -39,7 +39,11 @@ export default function Chat() {
                     </div>
                 ))}
             </div>
-            <textarea id="chatInput" ref={chatMessenger} />
+            <textarea
+                value="Write your message..."
+                id="chatInput"
+                ref={chatMessenger}
+            />
             <button
                 onClick={() => {
                     console.log(chatMessenger.current.value);

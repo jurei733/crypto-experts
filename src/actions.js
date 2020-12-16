@@ -55,6 +55,13 @@ export async function logout() {
         type: "LOGOUT",
     };
 }
+export async function receiveNews() {
+    let { data } = await axios.get("/api/news");
+    return {
+        type: "RECEIVE_NEWS",
+        news: data,
+    };
+}
 
 export async function receiveCoins() {
     let { data } = await axios.get("/api/coins");
@@ -81,16 +88,23 @@ export async function buyCoin(coinId, amount) {
 }
 
 export async function sellCoin(coinId, amount) {
-    let { data } = await axios.get(
-        `https://api.coingecko.com/api/v3/simple/price?ids=${coinId}&vs_currencies=usd`
-    );
-    console.log("PRICE", data[coinId].usd);
-    await axios.post(`/api/coin/sell/${coinId}`, {
-        price: data[coinId].usd,
-        amount,
-    });
+    let error = false;
+    try {
+        let { data } = await axios.get(
+            `https://api.coingecko.com/api/v3/simple/price?ids=${coinId}&vs_currencies=usd`
+        );
+        await axios.post(`/api/coin/sell/${coinId}`, {
+            price: data[coinId].usd,
+            amount,
+        });
+        console.log("PRICE", data[coinId].usd, "AMOUNT", amount);
+    } catch (e) {
+        console.log("Error", e);
+        error = true;
+    }
     return {
         type: "SELL_COIN",
+        error,
     };
 }
 
@@ -111,19 +125,6 @@ export async function receiveCoinData(id) {
         type: "RECEIVE_COIN_DATA",
         coin: coin.data,
         history: history.data.prices,
-    };
-}
-
-export async function historyData(id) {
-    const unixTime = Math.floor(Date.now() / 1000);
-    let weekTime = unixTime - 604800;
-    let { data } = await axios.get(
-        `https://api.coingecko.com/api/v3/coins/${id}/market_chart/range?vs_currency=usd&from=${weekTime}&to=${unixTime}`
-    );
-    console.log("HISTORY DATA", data);
-    return {
-        type: "HISTORY_DATA",
-        history: data.prices,
     };
 }
 
@@ -149,7 +150,8 @@ export async function receiveCoinsBalance() {
     });
     console.log("CurrenciesPrices", currenciesPrices);
     console.log("COIN BALANCE", data);
-    let totals = data.map((el) => el.total);
+    let totals = data.map((el) => Math.round(el.total));
+
     let totalSum = totals.reduce((a, b) => {
         return a + b;
     });
@@ -207,5 +209,77 @@ export async function receiveRanking() {
     return {
         type: "RECEIVE_RANKING",
         userRanking: data,
+    };
+}
+
+export async function historyData(id, timespan) {
+    const unixTime = Math.floor(Date.now() / 1000);
+    let data = [];
+    if (timespan == "one_week") {
+        let weekTime = unixTime - 604800;
+        data = await axios.get(
+            `https://api.coingecko.com/api/v3/coins/${id}/market_chart/range?vs_currency=usd&from=${weekTime}&to=${unixTime}`
+        );
+    } else if (timespan == "one_hour") {
+        let oneHour = unixTime - 3600;
+        data = await axios.get(
+            `https://api.coingecko.com/api/v3/coins/${id}/market_chart/range?vs_currency=usd&from=${oneHour}&to=${unixTime}`
+        );
+    } else if (timespan == "twelve_hours") {
+        let twelveHours = unixTime - 43200;
+        data = await axios.get(
+            `https://api.coingecko.com/api/v3/coins/${id}/market_chart/range?vs_currency=usd&from=${twelveHours}&to=${unixTime}`
+        );
+    } else if (timespan == "one_day") {
+        let oneDay = unixTime - 86400;
+        data = await axios.get(
+            `https://api.coingecko.com/api/v3/coins/${id}/market_chart/range?vs_currency=usd&from=${oneDay}&to=${unixTime}`
+        );
+    } else if (timespan == "three_days") {
+        let threeDays = unixTime - 259200;
+        data = await axios.get(
+            `https://api.coingecko.com/api/v3/coins/${id}/market_chart/range?vs_currency=usd&from=${threeDays}&to=${unixTime}`
+        );
+    } else if (timespan == "one_week") {
+        let oneWeek = unixTime - 604800;
+        data = await axios.get(
+            `https://api.coingecko.com/api/v3/coins/${id}/market_chart/range?vs_currency=usd&from=${oneWeek}&to=${unixTime}`
+        );
+    } else if (timespan == "one_month") {
+        let oneMonth = unixTime - 2628000;
+        data = await axios.get(
+            `https://api.coingecko.com/api/v3/coins/${id}/market_chart/range?vs_currency=usd&from=${oneMonth}&to=${unixTime}`
+        );
+    } else if (timespan == "three_months") {
+        let threeMonths = unixTime - 7884000;
+        data = await axios.get(
+            `https://api.coingecko.com/api/v3/coins/${id}/market_chart/range?vs_currency=usd&from=${threeMonths}&to=${unixTime}`
+        );
+    } else if (timespan == "six_months") {
+        let sixMonths = unixTime - 15768000;
+        data = await axios.get(
+            `https://api.coingecko.com/api/v3/coins/${id}/market_chart/range?vs_currency=usd&from=${sixMonths}&to=${unixTime}`
+        );
+    } else if (timespan == "one_year") {
+        let oneYear = unixTime - 31536000;
+        data = await axios.get(
+            `https://api.coingecko.com/api/v3/coins/${id}/market_chart/range?vs_currency=usd&from=${oneYear}&to=${unixTime}`
+        );
+    } else if (timespan == "three_years") {
+        let threeYears = unixTime - 94608000;
+        data = await axios.get(
+            `https://api.coingecko.com/api/v3/coins/${id}/market_chart/range?vs_currency=usd&from=${threeYears}&to=${unixTime}`
+        );
+    } else if (timespan == "max") {
+        let max = unixTime - 315360000;
+        data = await axios.get(
+            `https://api.coingecko.com/api/v3/coins/${id}/market_chart/range?vs_currency=usd&from=${max}&to=${unixTime}`
+        );
+    }
+
+    console.log("HISTORY DATA", data);
+    return {
+        type: "HISTORY_DATA",
+        history: data.data.prices,
     };
 }

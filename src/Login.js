@@ -46,9 +46,11 @@ export default class Login extends React.Component {
     render() {
         return (
             <React.Fragment>
-                <h2>Login</h2>
-                {this.state.error && <p>DIDNT WORK, TOO BAD, BYE.</p>}
-                <form onSubmit={this.handleSubmit}>
+                {this.state.error && <p>Did not work. Please try again.</p>}
+                <form
+                    onSubmit={this.handleSubmit}
+                    style={{ marginTop: "30px" }}
+                >
                     <input
                         type="email"
                         name="email"
@@ -67,7 +69,9 @@ export default class Login extends React.Component {
                         Login
                     </button>
                 </form>
-                <Link to="/">Registration</Link>
+                <Link style={{ marginBottom: "10px" }} to="/">
+                    Registration
+                </Link>
                 <Link to="/resetpassword">Forgot your Password?</Link>
             </React.Fragment>
         );

@@ -66,7 +66,7 @@ export default class BioEditor extends React.Component {
             );
         }
         return (
-            <div>
+            <div className="bio">
                 <h1>{name}</h1>
                 <textarea defaultValue={this.state.bio}></textarea>
                 <button onClick={this.saveEdit} className="btn">

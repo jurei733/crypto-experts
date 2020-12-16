@@ -140,17 +140,17 @@ module.exports.addMessage = function addMessage(id, message) {
     );
 };
 
-module.exports.buyCoin = function buyCoin(id, amount, currency) {
+module.exports.buyCoin = function buyCoin(id, amount, currency, price) {
     return db.query(
-        "INSERT INTO orderbook (users_id, amount, currency) VALUES ($1,$2,$3)",
-        [id, amount, currency]
+        "INSERT INTO orderbook (users_id, amount, currency,price) VALUES ($1,$2,$3,$4)",
+        [id, amount, currency, price]
     );
 };
 
-module.exports.sellCoin = function sellCoin(id, amount, currency) {
+module.exports.sellCoin = function sellCoin(id, amount, currency, price) {
     return db.query(
-        "INSERT INTO orderbook (users_id, amount, currency) VALUES ($1,$2,$3)",
-        [id, amount, currency]
+        "INSERT INTO orderbook (users_id, amount, currency,price) VALUES ($1,$2,$3,$4)",
+        [id, amount, currency, price]
     );
 };
 
@@ -172,6 +172,26 @@ module.exports.getCoinsBalance = function getCoinsBalance(userId) {
     );
 };
 
+module.exports.checkBuyOrder = function checkBuyOrder(userId, coin) {
+    return db.query(
+        "SELECT SUM(amount), currency FROM orderbook WHERE users_id=$1 AND currency=$2 GROUP BY currency",
+        [userId, coin]
+    );
+};
+
 module.exports.getRanking = function getRanking() {
     return db.query("SELECT id,firstname,lastname,image, balance FROM users");
+};
+
+module.exports.getBuyPerformance = function getBuyPerformance(userId) {
+    return db.query(
+        "SELECT SUM(amount*price),COUNT(*) FROM orderbook WHERE amount>0 AND users_id=$1",
+        [userId]
+    );
+};
+module.exports.getSellPerformance = function getSellPerformance(userId) {
+    return db.query(
+        "SELECT SUM(amount*price),COUNT(*) FROM orderbook WHERE amount<0 AND users_id=$1",
+        [userId]
+    );
 };
