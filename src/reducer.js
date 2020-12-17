@@ -13,6 +13,7 @@ export default function (
         news: [],
         coinImages: [],
         error: false,
+        sucess: false,
     },
     action
 ) {
@@ -109,6 +110,7 @@ export default function (
         state = {
             ...state,
             error: action.error,
+            reason: action.reason,
         };
     }
 

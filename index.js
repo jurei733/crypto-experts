@@ -319,8 +319,14 @@ app.post("/api/coin/buy/:name", async (req, res) => {
     console.log("totalBuyOrder", totalBuyOrder);
     let balance = await db.getBalance(req.session.userId);
     console.log("BALANCE BEFORE BUY ORDER", balance.rows[0].balance);
+    if (totalBuyOrder <= 0)
+        return res
+            .status(400)
+            .json("Your order request need to be a positive number");
     if (totalBuyOrder > balance.rows[0].balance)
-        return res.sendStatus(400).json("Your order was too high");
+        return res
+            .status(400)
+            .json("Your order was too high. Not enough Fiat money");
     try {
         await db.buyCoin(
             req.session.userId,
@@ -329,7 +335,7 @@ app.post("/api/coin/buy/:name", async (req, res) => {
             req.body.price
         );
     } catch (e) {
-        return res.sendStatus(400).json({ error: "just no" });
+        return res.status(400).json({ error: "just no" });
     }
 
     let newBalance = balance.rows[0].balance - totalBuyOrder;

@@ -25,11 +25,7 @@ export default function UserStats() {
     const totals = useSelector((store) => store.totals);
     const totalSum = useSelector((store) => store.totalSum);
     const coins = useSelector((store) => store.coins);
-    const coinImages = coins.map((coin) => {
-        let obj = { name: coin.id, url: coin.image };
-        return obj;
-    });
-    console.log("coinImages", coinImages);
+    console.log("coins", coins);
 
     useEffect(() => {
         if (chart) chart.destroy();
@@ -102,34 +98,29 @@ export default function UserStats() {
                         <div className="grid-container" key={coin.currency}>
                             <img
                                 src={
-                                    coinImages &&
-                                    coinImages.filter(
-                                        (coinImage) =>
-                                            (coinImage.name = coin.currency)
-                                    ).url
+                                    coins &&
+                                    coins.find((c) => c.id === coin.currency)
+                                        .image
                                 }
                                 style={{ width: 50, height: 50 }}
                             ></img>
-                            &nbsp;&nbsp;
-                            <strong>
-                                Amount:
+                            <strong style={{ fontSize: 25 }}>
+                                {coin.currency}
+                            </strong>
+                            <strong style={{ fontSize: 25 }}>
                                 {new Intl.NumberFormat("de-DE", {
                                     style: "decimal",
                                     maximumFractionDigits: 2,
                                 }).format(coin.sum)}
                             </strong>
-                            &nbsp;&nbsp;
-                            <strong>
-                                Price:
+                            <strong style={{ fontSize: 25 }}>
                                 {new Intl.NumberFormat("de-DE", {
                                     style: "currency",
                                     currency: "USD",
                                     maximumFractionDigits: 2,
                                 }).format(coin.price)}
                             </strong>
-                            &nbsp;&nbsp;
-                            <strong>
-                                WORTH:
+                            <strong style={{ fontSize: 25 }}>
                                 {new Intl.NumberFormat("de-DE", {
                                     style: "currency",
                                     currency: "USD",

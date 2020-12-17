@@ -13,8 +13,6 @@ export default function Coins(props) {
     const buyAmount = useRef();
     const dispatch = useDispatch();
     const [modal, setModal] = useState(false);
-    const [error, setError] = useState(false);
-    const [sucess, setSucess] = useState(false);
 
     useEffect(() => {
         dispatch(receiveCoinData(props.match.params.name));
@@ -22,7 +20,7 @@ export default function Coins(props) {
 
     const coin = useSelector((store) => store.coin);
     const globalError = useSelector((store) => store.error);
-    //setError(globalError);
+    const globalSucess = useSelector((store) => store.sucess);
 
     const coinDates = useSelector((store) =>
         store.history.map((arr) => new Date(arr[0]))
@@ -52,9 +50,22 @@ export default function Coins(props) {
         };
 
         //options
+
         var options = {
             tooltips: {
-                // Disable the on-canvas tooltip
+                displayColors: false,
+                callbacks: {
+                    label(tooltipItem, data) {
+                        let label =
+                            data.datasets[tooltipItem.datasetIndex].label || "";
+                        if (label) label += ": ";
+                        label += new Intl.NumberFormat("de-DE", {
+                            style: "currency",
+                            currency: "USD",
+                        }).format(tooltipItem.yLabel);
+                        return label;
+                    },
+                },
                 enabled: true,
             },
             responsive: true,
@@ -170,7 +181,12 @@ export default function Coins(props) {
                     More Info
                 </button>
             </div>
-            {error && <p>ERROR</p>}
+            {globalError && (
+                <p className="red">Your Order was not sucessful!</p>
+            )}
+            {globalSucess && (
+                <p className="green">Your Order was sucessful! </p>
+            )}
             {modal && (
                 <div>
                     <p

@@ -73,6 +73,7 @@ export async function receiveCoins() {
 
 export async function buyCoin(coinId, amount) {
     let error = false;
+    let data = {};
     try {
         console.log("COIN ID", coinId);
         let { data } = await axios.get(
@@ -80,17 +81,19 @@ export async function buyCoin(coinId, amount) {
         );
         console.log("PRICE", data[coinId].usd);
         console.log("AMOUNT", amount);
-        await axios.post(`/api/coin/buy/${coinId}`, {
+        data = await axios.post(`/api/coin/buy/${coinId}`, {
             price: data[coinId].usd,
             amount,
         });
     } catch (e) {
+        console.log("MESSAGE", data);
         console.log(e);
         error = true;
     }
     return {
         type: "BUY_COIN",
         error,
+        reason: data,
     };
 }
 
