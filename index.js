@@ -7,7 +7,13 @@ const io = require("socket.io")(server);
 const compression = require("compression");
 const session = require("cookie-session");
 const bcrypt = require("bcryptjs");
-const secrets = require("./secrets.json");
+
+let secrets;
+if (process.env.NODE_ENV == "production") {
+    secrets = process.env; // in prod the secrets are environment variables
+} else {
+    secrets = require("./secrets.json"); // in dev they are in secrets.json which is listed in .gitignore
+}
 const db = require("./db.js");
 const csurf = require("csurf");
 const crypto = require("crypto-random-string");
@@ -16,7 +22,7 @@ const uploader = require("./middlewares/uploader.js");
 const s3 = require("./middlewares/s3.js");
 const CoinGecko = require("coingecko-api");
 const CryptoNewsAPI = require("crypto-news-api").default;
-const Api = new CryptoNewsAPI("772fc7ab3372aa82a6c504be6e509417");
+const Api = new CryptoNewsAPI(secrets.CRYPTO_NEWS);
 
 const CoinGeckoClient = new CoinGecko();
 let connectedList = [];
@@ -481,7 +487,7 @@ app.get("*", function (req, res) {
     }
 });
 
-server.listen(8080, function () {
+server.listen(process.env.PORT || 8080, function () {
     console.log("I'm listening.");
 });
 
