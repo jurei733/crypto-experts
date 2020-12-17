@@ -32,7 +32,8 @@ export default function Ranking() {
                             <span>
                                 {new Intl.NumberFormat("de-DE", {
                                     style: "percent",
-                                }).format(user.performance)}
+                                    minimumFractionDigits: 2,
+                                }).format((user.totalAmount - 100000) / 100000)}
                             </span>
                         </div>
                     </Link>
