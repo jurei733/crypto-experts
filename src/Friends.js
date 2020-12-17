@@ -21,13 +21,23 @@ export default function Friends() {
             store.friendsWannabes.filter((friend) => friend.accepted == false)
     );
 
-    console.log("Friends", friends);
+    console.log("Friends", friends, friends.length);
     console.log("FriendRequester", friendRequester);
+
+    if (!friends.length && !friendRequester.length)
+        return (
+            <div id="noFriends">
+                <h2>No Friends or Friend Request yet. Search our community </h2>
+                <Link className="link" to={`/users`}>
+                    <img src="/find-friends-icon.png"></img>
+                </Link>
+            </div>
+        );
 
     return (
         <React.Fragment>
             <h2> This people want to be your friend </h2>
-            <div>
+            <div id="wannabeFriends">
                 {friendRequester.map((friendReq) => (
                     <div key={friendReq.id}>
                         <img src={friendReq.image} />
@@ -48,7 +58,7 @@ export default function Friends() {
                 ))}
             </div>
             <h2> This people are currently your friends </h2>
-            <div>
+            <div id="friends">
                 {friends.map((friend) => (
                     <div key={friend.id}>
                         <img src={friend.image} />

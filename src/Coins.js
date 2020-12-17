@@ -16,41 +16,14 @@ export default function Coins() {
 
     return (
         <div id="coinOverview">
-            <div id="marketOverview">
-                <p>
-                    BTC-Dominance:
-                    {global.market_cap_percentage &&
-                        new Intl.NumberFormat("en-GB", {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2,
-                        }).format(global.market_cap_percentage.btc)}
-                    %
-                </p>
-                <p
-                    className={
-                        global.price_change_percentage_24h > 0
-                            ? " globalMarketCapPercentage green"
-                            : " globalMarketCapPercentage red"
-                    }
-                >
-                    {global.market_cap_change_percentage_24h_usd &&
-                        new Intl.NumberFormat("en-GB", {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2,
-                        }).format(global.market_cap_change_percentage_24h_usd)}
-                    (24h)
-                </p>
-            </div>
             <div className="coins-header">
-                <p className="coinRank">Rank</p>
-                <div style={{ width: 200 }}></div>
-                <div className="coinNaming">
-                    <p>Coin-Name(Symbol)</p>
-                </div>
-                <p className="coinPrice">Price</p>
-                <p className="coinMarketCap">Market-Capitalization</p>
-                <p className={"coinPriceChange"}>Price Change(24h)</p>
-                <p className={"coinPriceChange"}>Market Cap Change(24h)</p>
+                <p>Rank </p>
+                <p>Coin</p>
+
+                <p>Price</p>
+                <p>Market-Capitalization</p>
+                <p>Price Change(24h)</p>
+                <p>Market Cap Change(24h)</p>
             </div>
             {coins.map((coin) => (
                 <Link to={`/coin/${coin.id}`} className="coin" key={coin.id}>
@@ -101,3 +74,46 @@ export default function Coins() {
         </div>
     );
 }
+
+/*
+<div id="marketOverview">
+    Dominance:{" "}
+    <p>
+        Bitcoin{" "}
+        {global.market_cap_percentage &&
+            new Intl.NumberFormat("en-GB", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+            }).format(global.market_cap_percentage.btc)}
+        %
+    </p>
+    <p>
+        Ethereum{" "}
+        {global.market_cap_percentage &&
+            new Intl.NumberFormat("en-GB", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+            }).format(global.market_cap_percentage.eth)}
+        %
+    </p>
+    <p>
+        {new Intl.NumberFormat("de-DE", {
+            style: "currency",
+            currency: "USD",
+        }).format(global.total_market_cap.usd)}
+    </p>
+    <p
+        className={
+            global.market_cap_change_percentage_24h_usd > 0
+                ? " globalMarketCapPercentage green"
+                : " globalMarketCapPercentage red"
+        }
+    >
+        {global.market_cap_change_percentage_24h_usd &&
+            new Intl.NumberFormat("en-GB", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+            }).format(global.market_cap_change_percentage_24h_usd)}
+        (24h)
+    </p>
+</div>;*/

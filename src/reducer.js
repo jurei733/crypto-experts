@@ -12,6 +12,7 @@ export default function (
         totalSum: null,
         news: [],
         coinImages: [],
+        error: false,
     },
     action
 ) {
@@ -103,6 +104,11 @@ export default function (
         state = {
             ...state,
             news: action.news,
+        };
+    } else if (action.type == "BUY_COIN") {
+        state = {
+            ...state,
+            error: action.error,
         };
     }
 

@@ -40,17 +40,18 @@ export default function Chat() {
                 ))}
             </div>
             <textarea
-                value="Write your message..."
+                defaultValue="Write your message..."
                 id="chatInput"
                 ref={chatMessenger}
             />
             <button
+                className="coinBtn"
                 onClick={() => {
                     console.log(chatMessenger.current.value);
                     socket.emit("chatMessage", chatMessenger.current.value);
                 }}
             >
-                SEND
+                Send
             </button>
         </div>
     );

@@ -72,18 +72,25 @@ export async function receiveCoins() {
 }
 
 export async function buyCoin(coinId, amount) {
-    console.log("COIN ID", coinId);
-    let { data } = await axios.get(
-        `https://api.coingecko.com/api/v3/simple/price?ids=${coinId}&vs_currencies=usd`
-    );
-    console.log("PRICE", data[coinId].usd);
-    console.log("AMOUNT", amount);
-    await axios.post(`/api/coin/buy/${coinId}`, {
-        price: data[coinId].usd,
-        amount,
-    });
+    let error = false;
+    try {
+        console.log("COIN ID", coinId);
+        let { data } = await axios.get(
+            `https://api.coingecko.com/api/v3/simple/price?ids=${coinId}&vs_currencies=usd`
+        );
+        console.log("PRICE", data[coinId].usd);
+        console.log("AMOUNT", amount);
+        await axios.post(`/api/coin/buy/${coinId}`, {
+            price: data[coinId].usd,
+            amount,
+        });
+    } catch (e) {
+        console.log(e);
+        error = true;
+    }
     return {
         type: "BUY_COIN",
+        error,
     };
 }
 
@@ -178,6 +185,16 @@ export async function receiveRanking() {
         "cardano",
         "polkadot",
         "binancecoin",
+        "stellar",
+        "bitcoin-cash-sv",
+        "usd-coin",
+        "eos",
+        "monero",
+        "wrapped-bitcoin",
+        "nem",
+        "tron",
+        "tezos",
+        "okb",
     ];
     let stringAPI = "";
     currencies.forEach((element) => {

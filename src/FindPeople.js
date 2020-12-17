@@ -35,48 +35,80 @@ export default function IncrementalSearch() {
 
     if (!searched) {
         return (
-            <React.Fragment>
-                <h1>Find People!</h1>
+            <div id="findPeople">
+                <h1>Find Members!</h1>
                 <input
+                    style={{ fontSize: 40 }}
                     type="search"
                     name="query"
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                 />
                 <h2>Checkout who just joined!</h2>
+
                 <div className="userOverview">
                     {users.map((user) => (
-                        <div key={user.id}>
-                            <img src={user.image} />
-                            <Link className="link" to={`/user/${user.id}`}>
-                                {user.firstname}
-                                {user.lastname}
-                            </Link>
-                        </div>
+                        <Link key={user.id} to={`/user/${user.id}`}>
+                            <div>
+                                <img
+                                    style={{ objectFit: "fill" }}
+                                    className="bigProfilePicture"
+                                    src={user.image}
+                                />
+                                <span
+                                    style={{
+                                        fontSize: 20,
+                                        fontWeight: "bold",
+                                        color: "black",
+                                    }}
+                                >
+                                    {user.firstname}
+                                    {user.lastname}
+                                </span>
+                            </div>
+                        </Link>
                     ))}
                 </div>
-            </React.Fragment>
+            </div>
         );
     } else {
         return (
             <React.Fragment>
-                <h1>Find People!</h1>
-                <input
-                    type="search"
-                    name="query"
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                />
-                <div className="userOverview">
-                    {users.map((user) => (
-                        <div key={user.id}>
-                            <img src={user.image} />
-                            <Link className="link" to={`/user/${user.id}`}>
-                                {user.firstname}
-                                {user.lastname}
+                <div id="findPeople">
+                    <h1>Find People!</h1>
+                    <input
+                        style={{ fontSize: 40 }}
+                        type="search"
+                        name="query"
+                        value={query}
+                        onChange={(e) => setQuery(e.target.value)}
+                    />
+                    <div className="userOverview">
+                        {users.map((user) => (
+                            <Link key={user.id} to={`/user/${user.id}`}>
+                                <div className="findUser">
+                                    <img
+                                        style={{
+                                            objectFit: "fill",
+                                            margin: "10px",
+                                        }}
+                                        className="bigProfilePicture"
+                                        src={user.image}
+                                    />
+                                    <span
+                                        style={{
+                                            fontSize: 25,
+                                            fontWeight: "bold",
+                                            color: "black",
+                                        }}
+                                    >
+                                        {user.firstname}
+                                        {user.lastname}
+                                    </span>
+                                </div>
                             </Link>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
             </React.Fragment>
         );

@@ -13,26 +13,25 @@ export default function Coins(props) {
     const buyAmount = useRef();
     const dispatch = useDispatch();
     const [modal, setModal] = useState(false);
+    const [error, setError] = useState(false);
+    const [sucess, setSucess] = useState(false);
 
     useEffect(() => {
         dispatch(receiveCoinData(props.match.params.name));
     }, [props.match.params.name]);
 
     const coin = useSelector((store) => store.coin);
+    const globalError = useSelector((store) => store.error);
+    //setError(globalError);
 
     const coinDates = useSelector((store) =>
         store.history.map((arr) => new Date(arr[0]))
-    ); /*.map(
-            (arr) =>
-                new Date(arr[0]).getHours() +
-                ":" +
-                new Date(arr[0]).getMinutes()
-        
-    );*/
+    );
 
     const coinPrices = useSelector((store) =>
         store.history.map((arr) => arr[1])
     );
+
     useEffect(() => {
         if (chart) chart.destroy();
         var ctx = canvas.current;
@@ -43,7 +42,7 @@ export default function Coins(props) {
                 {
                     label: "Chart",
                     data: coinPrices,
-                    backgroundColor: "blue",
+                    backgroundColor: "black",
                     borderColor: "black",
                     fill: false,
                     lineTension: 0,
@@ -56,7 +55,7 @@ export default function Coins(props) {
         var options = {
             tooltips: {
                 // Disable the on-canvas tooltip
-                enabled: false,
+                enabled: true,
             },
             responsive: true,
             scales: {
@@ -130,15 +129,17 @@ export default function Coins(props) {
 
     return (
         <React.Fragment>
-            <img src={coin && coin.image.small} />
             <div id="coinTitle">
-                {coin && coin.name}
-                {coin &&
-                    new Intl.NumberFormat("de-DE", {
-                        style: "currency",
-                        currency: "USD",
-                    }).format(coin.market_data.current_price.usd)}
-                <input ref={buyAmount} name="buy" type="number"></input>
+                <img src={coin && coin.image.large} />
+                <span>{coin && coin.name}</span>
+                <span>
+                    {coin &&
+                        new Intl.NumberFormat("de-DE", {
+                            style: "currency",
+                            currency: "USD",
+                        }).format(coin.market_data.current_price.usd)}
+                </span>
+                <input ref={buyAmount} name="buy" min="0" type="number"></input>
                 <button
                     className="coinBtn"
                     onClick={() =>
@@ -147,7 +148,12 @@ export default function Coins(props) {
                 >
                     Buy
                 </button>
-                <input ref={sellAmount} name="sell" type="number"></input>
+                <input
+                    ref={sellAmount}
+                    min="0"
+                    name="sell"
+                    type="number"
+                ></input>
                 <button
                     className="coinBtn"
                     onClick={() =>
@@ -158,13 +164,13 @@ export default function Coins(props) {
                 </button>
                 <button
                     className="coinBtn"
-                    style={{ display: "inline" }}
+                    style={{ marginLeft: 50 }}
                     onClick={() => setModal(!modal)}
                 >
-                    Description
+                    More Info
                 </button>
             </div>
-
+            {error && <p>ERROR</p>}
             {modal && (
                 <div>
                     <p
@@ -175,7 +181,8 @@ export default function Coins(props) {
                     ></p>
                 </div>
             )}
-            <div style={{ width: "90vw" }}>
+
+            <div id="chart" style={{ width: "65vw" }}>
                 <canvas ref={canvas} id="myChart"></canvas>
             </div>
             <div id="historyChanges">
@@ -255,3 +262,6 @@ export default function Coins(props) {
         </React.Fragment>
     );
 }
+
+/* 
+            {success && <p>Success</p>}*/

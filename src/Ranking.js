@@ -29,9 +29,11 @@ export default function Ranking() {
                                 }).format(user.totalAmount)}
                             </span>
                             &nbsp;&nbsp;
-                            {new Intl.NumberFormat("de-DE", {
-                                style: "percent",
-                            }).format(user.performance)}
+                            <span>
+                                {new Intl.NumberFormat("de-DE", {
+                                    style: "percent",
+                                }).format(user.performance)}
+                            </span>
                         </div>
                     </Link>
                 ))}

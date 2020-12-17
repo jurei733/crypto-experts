@@ -9,7 +9,7 @@ export default function Welcome() {
     return (
         <div id="welcome">
             <img id="bigLogo" src="logo.png"></img>
-            <h2>The greatest community of cryto enthusiasts</h2>
+            <h2>The greatest community of crypto enthusiasts</h2>
             <HashRouter>
                 <React.Fragment>
                     <Route exact path="/" component={Registration} />

@@ -57,7 +57,7 @@ form {
 }
 
 #smallLogo {
-    margin-top: 20px;
+    margin-top: 15px;
     margin-left: 20px;
 }
 
@@ -96,6 +96,7 @@ input[type="password"] {
 
 .btn:hover {
     background-color: rgb(77, 84, 95);
+    transform: scale(1.1);
 }
 
 .btn:active {
@@ -107,8 +108,14 @@ input[type="password"] {
     cursor: pointer;
     background-color: black;
     color: #f2f4fb;
-    font-size: 15px;
+    font-size: 30px;
+    margin-left: 5px;
     border-radius: 5px;
+    padding: 5px;
+}
+
+.coinBtn:hover {
+    background-color: rgba(77, 84, 95);
 }
 
 ::placeholder {
@@ -153,14 +160,14 @@ input:focus::placeholder {
     background-color: goldenrod;
     border: 2px solid black;
     position: fixed;
-    width: 50vw;
+    min-width: 20%;
     top: 200px;
     left: 50%;
     transform: translateX(-50%);
     text-align: center;
     color: black;
     border-radius: 30px;
-    min-height: 50vh;
+    min-height: 20vh;
 }
 
 .bigProfilePicture {
@@ -207,6 +214,14 @@ textarea {
     overflow-x: auto;
     margin-top: 50px;
     border: black solid 5px;
+    width: 60vw;
+    min-height: 300px;
+
+    padding: 40px;
+    margin-left: 50%;
+    transform: translateX(-50%);
+    border-radius: 25px;
+    text-align: center;
 }
 
 .userOverview img {
@@ -234,13 +249,33 @@ textarea {
 .coins-header {
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
     margin-left: 50px;
     margin-right: 50px;
     text-decoration: none;
-    padding-left: 100px;
     border: 1px black solid;
-    font-size: 25px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.coins-header p:nth-child(1) {
+    margin-left: 10px;
+    margin-right: 120px;
+}
+
+.coins-header p:nth-child(2) {
+    margin-right: 160px;
+}
+
+.coins-header p:nth-child(3) {
+    margin-right: 230px;
+}
+
+.coins-header p:nth-child(4) {
+    margin-right: 180px;
+}
+
+.coins-header p:nth-child(5) {
+    margin-right: 100px;
 }
 
 .coin:hover {
@@ -292,10 +327,13 @@ textarea {
 #coinDescription {
     font-size: 20px;
     font-style: "Futura";
-    border: black solid 1px;
-    width: 90vw;
+    border: black solid 2px;
+    width: 80vw;
     padding: 10px;
     margin: 20px;
+    border-radius: 25px;
+    margin-left: 50%;
+    transform: translateX(-50%);
 }
 
 #coinDescription a {
@@ -427,6 +465,20 @@ textarea {
     border: 4px solid white; /* creates padding around scroll thumb */
 }
 
+.userOverview::-webkit-scrollbar-track {
+    background: black; /* color of the tracking area */
+}
+
+.userOverview::-webkit-scrollbar-thumb {
+    background-color: black; /* color of the scroll thumb */
+    border-radius: 20px; /* roundness of the scroll thumb */
+    border: 4px solid white; /* creates padding around scroll thumb */
+}
+
+.userOverview::-webkit-scrollbar {
+    width: 15px; /* width of the entire scrollbar */
+}
+
 #logout:hover {
     cursor: pointer;
 }
@@ -436,8 +488,23 @@ textarea {
 }
 
 #coinTitle {
+    margin-top: 30px;
     display: flex;
     flex-direction: row;
+    align-items: center;
+
+    margin-left: 50%;
+    transform: translateX(-50%);
+}
+
+#coinTitle span {
+    font-size: 40px;
+    font-weight: bold;
+    margin-left: 20px;
+}
+#coinTitle img {
+    height: 100px;
+    width: 100px;
 }
 
 .ranking {
@@ -511,6 +578,10 @@ a {
     border-radius: 50%;
 }
 
+.btnhistoryChanges:hover {
+    transform: scale(1.1);
+}
+
 .grid-container {
     display: grid;
     grid-template-rows: auto auto auto auto;
@@ -529,7 +600,7 @@ a {
     align-items: center;
     border: 3px black solid;
     margin: 10px;
-    height: 200px;
+    height: 230px;
     width: 70%;
     padding-right: 10px;
     border-radius: 25px;
@@ -565,4 +636,68 @@ a {
 
 #otherProfile div {
     padding-top: 50px;
+}
+
+#chart {
+    margin-top: 30px;
+    margin-left: 50%;
+    transform: translateX(-50%);
+}
+
+.findUser {
+    border-radius: 25px;
+}
+
+.findUser:hover {
+    background-color: rgb(77, 84, 95);
+    transform: scale(1.1);
+}
+
+#coinOverview {
+    width: 90%;
+    margin-top: 30px;
+    margin-left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: 20px;
+}
+
+#noFriends {
+    margin-left: 50%;
+    transform: translateX(-50%);
+    margin-top: 50px;
+}
+
+#findPeople {
+    margin-left: 50%;
+    transform: translateX(-50%);
+    margin-top: 50px;
+}
+
+input[type="number"] {
+    outline: none;
+    border: 0;
+
+    border: 2px solid black;
+    height: 10%;
+    display: block;
+    font-size: 40px;
+    width: 100px;
+    border-radius: 25px;
+    margin-left: 20px;
+    padding: 10px;
+}
+
+#exitUploader {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+#exitUploader:hover {
+    cursor: pointer;
+}
+
+a:visited,
+a:hover,
+a:link {
+    color: black;
 }

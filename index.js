@@ -319,7 +319,8 @@ app.post("/api/coin/buy/:name", async (req, res) => {
     console.log("totalBuyOrder", totalBuyOrder);
     let balance = await db.getBalance(req.session.userId);
     console.log("BALANCE BEFORE BUY ORDER", balance.rows[0].balance);
-    if (totalBuyOrder > balance) return res.sendStatus(400);
+    if (totalBuyOrder > balance.rows[0].balance)
+        return res.sendStatus(400).json("Your order was too high");
     try {
         await db.buyCoin(
             req.session.userId,
