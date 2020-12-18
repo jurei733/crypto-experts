@@ -100,6 +100,7 @@ export default function (
         state = {
             ...state,
             error: action.error,
+            sucess: action.sucess,
         };
     } else if (action.type == "RECEIVE_NEWS") {
         state = {
@@ -111,6 +112,16 @@ export default function (
             ...state,
             error: action.error,
             reason: action.reason,
+            sucess: action.sucess,
+        };
+    } else if (action.type == "RESET_ERROR") {
+        state = {
+            ...state,
+            error: action.error,
+        };
+    } else if (action.type == "RESET_SUCESS") {
+        state = {
+            ...state,
             sucess: action.sucess,
         };
     }

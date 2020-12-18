@@ -15,6 +15,7 @@ import FindPeople from "./FindPeople";
 import { Link } from "react-router-dom";
 import axios from "./axios.js";
 import { socket } from "./socket.js";
+import ResetError from "./ResetError.js";
 
 export default class App extends React.Component {
     constructor() {
@@ -229,6 +230,7 @@ export default class App extends React.Component {
                             <Route path="/chat" component={Chat} />
                             <Route path="/ranking" component={Ranking} />
                             <Route path="/news" component={News} />
+                            <ResetError></ResetError>
                         </div>
                     </React.Fragment>
                 </BrowserRouter>

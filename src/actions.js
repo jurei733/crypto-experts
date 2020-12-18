@@ -92,6 +92,7 @@ export async function buyCoin(coinId, amount) {
         console.log(e);
         error = true;
     }
+    console.log("WORKS AGAIN");
     return {
         type: "BUY_COIN",
         error,
@@ -102,6 +103,7 @@ export async function buyCoin(coinId, amount) {
 
 export async function sellCoin(coinId, amount) {
     let error = false;
+    let sucess = false;
     try {
         let { data } = await axios.get(
             `https://api.coingecko.com/api/v3/simple/price?ids=${coinId}&vs_currencies=usd`
@@ -111,6 +113,7 @@ export async function sellCoin(coinId, amount) {
             amount,
         });
         console.log("PRICE", data[coinId].usd, "AMOUNT", amount);
+        sucess = true;
     } catch (e) {
         console.log("Error", e);
         error = true;
@@ -118,6 +121,7 @@ export async function sellCoin(coinId, amount) {
     return {
         type: "SELL_COIN",
         error,
+        sucess,
     };
 }
 
@@ -138,6 +142,20 @@ export async function receiveCoinData(id) {
         type: "RECEIVE_COIN_DATA",
         coin: coin.data,
         history: history.data.prices,
+    };
+}
+
+export async function resetError() {
+    return {
+        type: "RESET_ERROR",
+        error: false,
+    };
+}
+
+export async function resetSucess() {
+    return {
+        type: "RESET_SUCESS",
+        sucess: false,
     };
 }
 

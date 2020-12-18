@@ -2,8 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { receiveCoinData, buyCoin, sellCoin, historyData } from "./actions.js";
 import Chart from "chart.js";
-import axios from "./axios";
-import { Link } from "react-router-dom";
 
 let chart = null;
 
@@ -16,7 +14,6 @@ export default function Coins(props) {
 
     useEffect(() => {
         dispatch(receiveCoinData(props.match.params.name));
-        
     }, [props.match.params.name]);
 
     const coin = useSelector((store) => store.coin);
@@ -31,7 +28,7 @@ export default function Coins(props) {
         store.history.map((arr) => arr[1])
     );
 
-    useEffect(() => 
+    useEffect(() => {
         if (chart) chart.destroy();
         var ctx = canvas.current;
         //line chart data

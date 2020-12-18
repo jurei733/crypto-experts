@@ -349,6 +349,7 @@ app.post("/api/coin/buy/:name", async (req, res) => {
     await db.updateBalance(req.session.userId, newBalance);
     let updatedBalance = await db.getBalance(req.session.userId);
     console.log("Updated Balance", updatedBalance.rows[0].balance);
+    return res.sendStatus(200);
 });
 
 app.post("/api/coin/sell/:name", async (req, res) => {
@@ -391,7 +392,7 @@ app.post("/api/coin/sell/:name", async (req, res) => {
     let newBalance = Math.round(balance.rows[0].balance + totalSellOrder);
     console.log(newBalance);
     await db.updateBalance(req.session.userId, newBalance);
-    res.sendStatus(200);
+    return res.sendStatus(200);
 });
 
 app.get("/api/coins/balance/", async (req, res) => {

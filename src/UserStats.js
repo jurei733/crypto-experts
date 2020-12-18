@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
     receiveUserData,
@@ -102,7 +102,7 @@ export default function UserStats() {
                                         coins &&
                                         coins.find(
                                             (c) => c.id === coin.currency
-                                        ).image
+                                        )?.image
                                     }
                                     style={{ width: 50, height: 50 }}
                                 ></img>
