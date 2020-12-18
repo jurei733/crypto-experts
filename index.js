@@ -391,6 +391,7 @@ app.post("/api/coin/sell/:name", async (req, res) => {
     let newBalance = Math.round(balance.rows[0].balance + totalSellOrder);
     console.log(newBalance);
     await db.updateBalance(req.session.userId, newBalance);
+    res.sendStatus(200);
 });
 
 app.get("/api/coins/balance/", async (req, res) => {
@@ -460,7 +461,7 @@ app.get("/activeUsers", async (req, res) => {
 });
 
 app.get("/api/news", async (req, res) => {
-    Api.getTopNews()
+    Api.getLatestNews()
         .then(function (articles) {
             return res.json(articles);
         })

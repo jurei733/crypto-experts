@@ -49,7 +49,7 @@ export default function IncrementalSearch() {
                 <div className="userOverview">
                     {users.map((user) => (
                         <Link key={user.id} to={`/user/${user.id}`}>
-                            <div>
+                            <div className="findUser">
                                 <img
                                     style={{ objectFit: "fill" }}
                                     className="bigProfilePicture"

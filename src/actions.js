@@ -73,6 +73,7 @@ export async function receiveCoins() {
 
 export async function buyCoin(coinId, amount) {
     let error = false;
+    let sucess = false;
     let data = {};
     try {
         console.log("COIN ID", coinId);
@@ -85,6 +86,7 @@ export async function buyCoin(coinId, amount) {
             price: data[coinId].usd,
             amount,
         });
+        sucess = true;
     } catch (e) {
         console.log("MESSAGE", data);
         console.log(e);
@@ -93,6 +95,7 @@ export async function buyCoin(coinId, amount) {
     return {
         type: "BUY_COIN",
         error,
+        sucess,
         reason: data,
     };
 }
@@ -164,7 +167,7 @@ export async function receiveCoinsBalance() {
 
     let totalSum = totals.reduce((a, b) => {
         return a + b;
-    });
+    }, 0);
 
     return {
         type: "RECEIVE_COIN_BALANCE",

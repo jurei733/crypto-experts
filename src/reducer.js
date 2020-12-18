@@ -111,6 +111,7 @@ export default function (
             ...state,
             error: action.error,
             reason: action.reason,
+            sucess: action.sucess,
         };
     }
 

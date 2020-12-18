@@ -10,7 +10,6 @@ import Chart from "chart.js";
 let chart = null;
 
 export default function UserStats() {
-    const [isLoading, setLoading] = useState(true);
     const canvas = useRef();
     const dispatch = useDispatch();
     useEffect(() => {
@@ -89,46 +88,49 @@ export default function UserStats() {
     }, [currencies, coinBalance, totals, user]);
     return (
         <div className="userStats">
-            <div id="pieGraph" style={{ width: 500 }}>
+            <div id="pieGraph" style={{ width: 600 }}>
                 <canvas ref={canvas} id="myChart"></canvas>
             </div>
             <div id="userBalance">
                 {coinBalance &&
-                    coinBalance.map((coin) => (
-                        <div className="grid-container" key={coin.currency}>
-                            <img
-                                src={
-                                    coins &&
-                                    coins.find((c) => c.id === coin.currency)
-                                        .image
-                                }
-                                style={{ width: 50, height: 50 }}
-                            ></img>
-                            <strong style={{ fontSize: 25 }}>
-                                {coin.currency}
-                            </strong>
-                            <strong style={{ fontSize: 25 }}>
-                                {new Intl.NumberFormat("de-DE", {
-                                    style: "decimal",
-                                    maximumFractionDigits: 2,
-                                }).format(coin.sum)}
-                            </strong>
-                            <strong style={{ fontSize: 25 }}>
-                                {new Intl.NumberFormat("de-DE", {
-                                    style: "currency",
-                                    currency: "USD",
-                                    maximumFractionDigits: 2,
-                                }).format(coin.price)}
-                            </strong>
-                            <strong style={{ fontSize: 25 }}>
-                                {new Intl.NumberFormat("de-DE", {
-                                    style: "currency",
-                                    currency: "USD",
-                                    maximumFractionDigits: 2,
-                                }).format(coin.total)}
-                            </strong>
-                        </div>
-                    ))}
+                    coinBalance
+                        .filter((c) => c.sum > 0)
+                        .map((coin) => (
+                            <div className="grid-container" key={coin.currency}>
+                                <img
+                                    src={
+                                        coins &&
+                                        coins.find(
+                                            (c) => c.id === coin.currency
+                                        ).image
+                                    }
+                                    style={{ width: 50, height: 50 }}
+                                ></img>
+                                <strong style={{ fontSize: 25 }}>
+                                    {coin.currency}
+                                </strong>
+                                <strong style={{ fontSize: 25 }}>
+                                    {new Intl.NumberFormat("de-DE", {
+                                        style: "decimal",
+                                        maximumFractionDigits: 2,
+                                    }).format(coin.sum)}
+                                </strong>
+                                <strong style={{ fontSize: 25 }}>
+                                    {new Intl.NumberFormat("de-DE", {
+                                        style: "currency",
+                                        currency: "USD",
+                                        maximumFractionDigits: 2,
+                                    }).format(coin.price)}
+                                </strong>
+                                <strong style={{ fontSize: 25 }}>
+                                    {new Intl.NumberFormat("de-DE", {
+                                        style: "currency",
+                                        currency: "USD",
+                                        maximumFractionDigits: 2,
+                                    }).format(coin.total)}
+                                </strong>
+                            </div>
+                        ))}
 
                 <div id="totalStat">
                     <strong>

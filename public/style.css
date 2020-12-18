@@ -264,11 +264,11 @@ textarea {
 }
 
 .coins-header p:nth-child(2) {
-    margin-right: 160px;
+    margin-right: 450px;
 }
 
 .coins-header p:nth-child(3) {
-    margin-right: 230px;
+    margin-right: 350px;
 }
 
 .coins-header p:nth-child(4) {
@@ -354,9 +354,14 @@ textarea {
 }
 
 #totalStat {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
     font-size: 25px;
-    padding: 10px;
+    padding: 5px;
     border: 2px black solid;
+    border-radius: 25px;
 }
 #totalStat strong {
     margin: 20px;
@@ -576,6 +581,7 @@ a {
     margin: 20px;
     padding: 10px;
     border-radius: 50%;
+    font-size: 20px;
 }
 
 .btnhistoryChanges:hover {
@@ -649,6 +655,8 @@ a {
 
 .findUser {
     border-radius: 25px;
+    display: flex;
+    flex-direction: column;
 }
 
 .findUser:hover {
@@ -683,7 +691,7 @@ input[type="number"] {
     border: 2px solid black;
     height: 10%;
     display: block;
-    font-size: 40px;
+    font-size: 35px;
     width: 100px;
     border-radius: 25px;
     margin-left: 20px;
@@ -707,4 +715,22 @@ a:link {
 
 #userBalance {
     width: 40vw;
+}
+
+#orderError {
+    font-weight: bold;
+    transform: translateX(-25%);
+    margin-left: 50%;
+    margin-top: 50px;
+    color: red;
+    font-size: 25px;
+}
+
+#orderSucess {
+    font-size: 25px;
+    font-weight: bold;
+    transform: translateX(-25%);
+    margin-left: 50%;
+    margin-top: 50px;
+    color: green;
 }

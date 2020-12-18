@@ -16,11 +16,12 @@ export default function Coins(props) {
 
     useEffect(() => {
         dispatch(receiveCoinData(props.match.params.name));
+        
     }, [props.match.params.name]);
 
     const coin = useSelector((store) => store.coin);
-    const globalError = useSelector((store) => store.error);
-    const globalSucess = useSelector((store) => store.sucess);
+    let globalError = useSelector((store) => store.error);
+    let globalSucess = useSelector((store) => store.sucess);
 
     const coinDates = useSelector((store) =>
         store.history.map((arr) => new Date(arr[0]))
@@ -30,7 +31,7 @@ export default function Coins(props) {
         store.history.map((arr) => arr[1])
     );
 
-    useEffect(() => {
+    useEffect(() => 
         if (chart) chart.destroy();
         var ctx = canvas.current;
         //line chart data
@@ -74,7 +75,7 @@ export default function Coins(props) {
                     {
                         ticks: {
                             fontColor: "black",
-                            fontSize: 20,
+                            fontSize: 22,
                         },
                         scaleLabel: {
                             display: true,
@@ -99,7 +100,7 @@ export default function Coins(props) {
                         },
                         ticks: {
                             fontColor: "black",
-                            fontSize: 20,
+                            fontSize: 25,
 
                             // Include a dollar sign in the ticks
                             callback: function (value) {
@@ -132,7 +133,7 @@ export default function Coins(props) {
             data: data,
             options: options,
         });
-    }, [coinDates, coinPrices]);
+    }, [coinDates, coinPrices, globalError]);
 
     console.log("COIN_Prices", coinPrices);
     console.log("COIN DATES", coinDates);
@@ -153,9 +154,9 @@ export default function Coins(props) {
                 <input ref={buyAmount} name="buy" min="0" type="number"></input>
                 <button
                     className="coinBtn"
-                    onClick={() =>
-                        dispatch(buyCoin(coin.id, buyAmount.current.value))
-                    }
+                    onClick={() => {
+                        dispatch(buyCoin(coin.id, buyAmount.current.value));
+                    }}
                 >
                     Buy
                 </button>
@@ -167,9 +168,9 @@ export default function Coins(props) {
                 ></input>
                 <button
                     className="coinBtn"
-                    onClick={() =>
-                        dispatch(sellCoin(coin.id, sellAmount.current.value))
-                    }
+                    onClick={() => {
+                        dispatch(sellCoin(coin.id, sellAmount.current.value));
+                    }}
                 >
                     Sell
                 </button>
@@ -182,11 +183,9 @@ export default function Coins(props) {
                 </button>
             </div>
             {globalError && (
-                <p className="red">Your Order was not sucessful!</p>
+                <p id="orderError">Your Order was not sucessful!</p>
             )}
-            {globalSucess && (
-                <p className="green">Your Order was sucessful! </p>
-            )}
+            {globalSucess && <p id="orderSucess">Your Order was sucessful! </p>}
             {modal && (
                 <div>
                     <p
