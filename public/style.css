@@ -734,8 +734,12 @@ a:link {
     position: flex;
     flex-direction: column;
 }
+.friend:hover {
+    background-color: rgb(77, 84, 95);
+    transform: scale(1.1);
+}
 
-.friendContainer {
+#friendContainer {
     transform: translateX(-50%);
     margin-left: 50%;
 }

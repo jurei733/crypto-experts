@@ -40,14 +40,6 @@ export default function Friends() {
             <div id="wannabeFriends">
                 {friendRequester.map((friendReq) => (
                     <div className="friend" key={friendReq.id}>
-                        <img
-                            style={{
-                                objectFit: "fill",
-                                margin: "10px",
-                            }}
-                            className="bigProfilePicture"
-                            src={friendReq.image}
-                        />
                         <Link
                             style={{
                                 fontSize: 25,
@@ -56,12 +48,21 @@ export default function Friends() {
                             }}
                             to={`/user/${friendReq.id}`}
                         >
+                            <img
+                                style={{
+                                    objectFit: "fill",
+                                    margin: "10px",
+                                }}
+                                className="bigProfilePicture"
+                                src={friendReq.image}
+                            />
+
                             {friendReq.firstname}
                             {friendReq.lastname}
                         </Link>
                         <div className="buttons">
                             <button
-                                className="coinBtn"
+                                className="btn"
                                 onClick={() =>
                                     dispatch(acceptFriend(friendReq.id))
                                 }
@@ -76,14 +77,6 @@ export default function Friends() {
             <div id="friends">
                 {friends.map((friend) => (
                     <div className="friend" key={friend.id}>
-                        <img
-                            style={{
-                                objectFit: "fill",
-                                margin: "10px",
-                            }}
-                            className="bigProfilePicture"
-                            src={friend.image}
-                        />
                         <Link
                             style={{
                                 fontSize: 25,
@@ -92,12 +85,21 @@ export default function Friends() {
                             }}
                             to={`/user/${friend.id}`}
                         >
+                            <img
+                                style={{
+                                    objectFit: "fill",
+                                    margin: "10px",
+                                }}
+                                className="bigProfilePicture"
+                                src={friend.image}
+                            />
+
                             {friend.firstname}
                             {friend.lastname}
                         </Link>
                         <div className="buttons">
                             <button
-                                className="coinBtn"
+                                className="btn"
                                 onClick={() => dispatch(unfriend(friend.id))}
                             >
                                 End Friendship
