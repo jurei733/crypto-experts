@@ -232,11 +232,6 @@ textarea {
     margin-right: 50px;
 }
 
-.link {
-    font-size: 30px;
-    color: white;
-}
-
 .coin {
     display: flex;
     flex-direction: row;
@@ -733,4 +728,14 @@ a:link {
     margin-left: 50%;
     margin-top: 50px;
     color: green;
+}
+
+.friend {
+    position: flex;
+    flex-direction: column;
+}
+
+.friendContainer {
+    transform: translateX(-50%);
+    margin-left: 50%;
 }

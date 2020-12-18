@@ -35,18 +35,33 @@ export default function Friends() {
         );
 
     return (
-        <React.Fragment>
+        <div id="friendContainer">
             <h2> This people want to be your friend </h2>
             <div id="wannabeFriends">
                 {friendRequester.map((friendReq) => (
-                    <div key={friendReq.id}>
-                        <img src={friendReq.image} />
-                        <Link className="link" to={`/user/${friendReq.id}`}>
+                    <div className="friend" key={friendReq.id}>
+                        <img
+                            style={{
+                                objectFit: "fill",
+                                margin: "10px",
+                            }}
+                            className="bigProfilePicture"
+                            src={friendReq.image}
+                        />
+                        <Link
+                            style={{
+                                fontSize: 25,
+                                fontWeight: "bold",
+                                color: "black",
+                            }}
+                            to={`/user/${friendReq.id}`}
+                        >
                             {friendReq.firstname}
                             {friendReq.lastname}
                         </Link>
                         <div className="buttons">
                             <button
+                                className="coinBtn"
                                 onClick={() =>
                                     dispatch(acceptFriend(friendReq.id))
                                 }
@@ -60,14 +75,29 @@ export default function Friends() {
             <h2> This people are currently your friends </h2>
             <div id="friends">
                 {friends.map((friend) => (
-                    <div key={friend.id}>
-                        <img src={friend.image} />
-                        <Link className="link" to={`/user/${friend.id}`}>
+                    <div className="friend" key={friend.id}>
+                        <img
+                            style={{
+                                objectFit: "fill",
+                                margin: "10px",
+                            }}
+                            className="bigProfilePicture"
+                            src={friend.image}
+                        />
+                        <Link
+                            style={{
+                                fontSize: 25,
+                                fontWeight: "bold",
+                                color: "black",
+                            }}
+                            to={`/user/${friend.id}`}
+                        >
                             {friend.firstname}
                             {friend.lastname}
                         </Link>
                         <div className="buttons">
                             <button
+                                className="coinBtn"
                                 onClick={() => dispatch(unfriend(friend.id))}
                             >
                                 End Friendship
@@ -76,6 +106,6 @@ export default function Friends() {
                     </div>
                 ))}
             </div>
-        </React.Fragment>
+        </div>
     );
 }
