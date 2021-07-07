@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter, Route, Link } from "react-router-dom";
 import Logo from "./Logo.js";
 import Profile from "./Profile";
 import Coins from "./Coins";
@@ -12,7 +12,6 @@ import Chat from "./Chat";
 import Friends from "./Friends";
 import Uploader from "./Uploader";
 import FindPeople from "./FindPeople";
-import { Link } from "react-router-dom";
 import axios from "./axios.js";
 import { socket } from "./socket.js";
 import ResetError from "./ResetError.js";
