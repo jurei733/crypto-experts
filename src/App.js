@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import Logo from "./Logo.js";
 import Profile from "./Profile";
 import Coins from "./Coins";
@@ -89,7 +89,7 @@ export default class App extends React.Component {
         if (!this.state.email) return null;
         return (
             <React.Fragment>
-                <BrowserRouter>
+                <Router>
                     {this.state.error && <p>DIDNT WORK, TOO BAD, BYE.</p>}
                     <div id="appHeader">
                         <Logo />
@@ -232,7 +232,7 @@ export default class App extends React.Component {
                             <ResetError></ResetError>
                         </div>
                     </React.Fragment>
-                </BrowserRouter>
+                </Router>
             </React.Fragment>
         );
     }
